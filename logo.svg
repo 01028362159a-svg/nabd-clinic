@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 180">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1769e0"/><stop offset="1" stop-color="#0b4db3"/></linearGradient></defs>
+<rect width="520" height="180" rx="42" fill="#f4f8ff"/>
+<path d="M90 105 C55 76 67 35 101 35 C121 35 132 49 140 61 C148 49 159 35 179 35 C213 35 225 76 190 105 L140 145 Z" fill="none" stroke="url(#g)" stroke-width="12"/>
+<path d="M75 82 H104 L116 62 L132 101 L148 76 L160 91 H205" fill="none" stroke="#1769e0" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="140" cy="61" r="7" fill="#0b4db3"/>
+<text x="260" y="112" direction="rtl" unicode-bidi="bidi-override" text-anchor="middle" font-family="Tahoma, Arial, sans-serif" font-size="72" font-weight="900" fill="#102a43">نبض</text>
+<text x="260" y="143" direction="rtl" unicode-bidi="bidi-override" text-anchor="middle" font-family="Tahoma, Arial, sans-serif" font-size="18" font-weight="700" fill="#1769e0">صحتك تهمنا</text>
+</svg>
