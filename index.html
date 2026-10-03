@@ -3,675 +3,704 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>نبض | حجز موعد</title>
+<title>نبض | حجز العيادة</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root{
-  --blue:#1769e0;
-  --blue2:#0b4db3;
-  --navy:#102a43;
-  --bg:#f4f8fc;
-  --card:#fff;
-  --line:#e4edf6;
-  --muted:#708197;
-  --green:#14935b;
-  --red:#d64545;
-  --orange:#e89018;
-  --shadow:0 18px 55px rgba(16,42,67,.09)
-}
-
 *{box-sizing:border-box}
+
+:root{
+  --primary:#1687c9;
+  --primary2:#0d6fa8;
+  --light:#eef9ff;
+  --lighter:#f8fcff;
+  --text:#17324d;
+  --muted:#6c8498;
+  --white:#fff;
+  --danger:#e74c3c;
+  --success:#18a66a;
+  --warning:#f0a52b;
+  --border:#dcecf5;
+  --shadow:0 10px 30px rgba(21,92,130,.10);
+}
 
 body{
   margin:0;
-  background:linear-gradient(180deg,#f8fbff,#f1f7fc);
-  color:var(--navy);
-  font-family:Tahoma,Arial,sans-serif
+  font-family:Tahoma,Arial,sans-serif;
+  background:linear-gradient(180deg,#f5fbff,#fff);
+  color:var(--text);
 }
 
-button,input,textarea,select{font:inherit}
-button{border:0;cursor:pointer}
-
-.wrap{
-  width:min(1160px,calc(100% - 30px));
-  margin:auto
+button,input,textarea,select{
+  font-family:inherit;
 }
 
-.header{
+button{
+  cursor:pointer;
+}
+
+a{
+  text-decoration:none;
+}
+
+.container{
+  width:min(1120px,92%);
+  margin:auto;
+}
+
+/* HEADER */
+header{
   position:sticky;
   top:0;
-  z-index:20;
-  background:#ffffffed;
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--line)
+  z-index:50;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
 }
 
 .nav{
-  min-height:76px;
+  min-height:72px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:15px
+  gap:15px;
 }
-
-/* ===== LOGO ===== */
 
 .brand{
   display:flex;
   align-items:center;
   gap:10px;
-  font-size:28px;
-  font-weight:1000;
-  color:var(--navy)
+  font-weight:900;
+  color:var(--text);
 }
 
-.brandLogo{
-  width:48px;
-  height:48px;
-  border-radius:16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(145deg,#1769e0,#53a1ff);
+.logoMark{
+  width:46px;
+  height:46px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#22a9ed,#0d70aa);
   color:white;
-  box-shadow:0 10px 25px #1769e033;
-  font-size:26px;
-  font-weight:1000;
-  position:relative;
-  overflow:hidden
-}
-
-.brandLogo:after{
-  content:"";
-  position:absolute;
-  width:40px;
-  height:2px;
-  background:#fff;
-  transform:rotate(-12deg);
-  opacity:.9
+  display:grid;
+  place-items:center;
+  font-size:25px;
+  box-shadow:0 8px 20px rgba(22,135,201,.25);
 }
 
 .brandText{
-  display:flex;
-  flex-direction:column;
-  line-height:1
+  font-size:24px;
 }
 
-.brandText small{
-  font-size:9px;
+.brandSmall{
+  display:block;
   color:var(--muted);
-  margin-top:5px;
-  font-weight:700
+  font-size:11px;
+  margin-top:2px;
+}
+
+.navActions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
 }
 
 .btn{
-  padding:13px 18px;
-  border-radius:14px;
-  font-weight:900;
-  transition:.2s
+  border:0;
+  border-radius:13px;
+  padding:12px 18px;
+  font-weight:800;
+  transition:.2s;
 }
 
 .btn:hover{
-  transform:translateY(-1px)
+  transform:translateY(-1px);
 }
 
-.primary{
-  background:linear-gradient(135deg,var(--blue),#3c8df7);
-  color:#fff;
-  box-shadow:0 10px 25px #1769e033
+.btnPrimary{
+  background:var(--primary);
+  color:white;
 }
 
-.soft{
-  background:#edf5ff;
-  color:var(--blue)
+.btnPrimary:hover{
+  background:var(--primary2);
 }
 
-.danger{
-  background:#fff0f0;
-  color:var(--red)
+.btnLight{
+  background:var(--light);
+  color:var(--primary2);
 }
 
-.success{
-  background:#eaf9f1;
-  color:#087b48
+.btnSuccess{
+  background:#e8faf2;
+  color:#11895a;
 }
 
-.warning{
-  background:#fff6e6;
-  color:#a45a00
+.btnDanger{
+  background:#fff0ee;
+  color:#c73527;
 }
 
-.muted{
-  color:var(--muted)
+.btnWarning{
+  background:#fff7e7;
+  color:#a86b00;
 }
 
+/* HERO */
 .hero{
-  padding:55px 0 30px;
+  padding:55px 0 35px;
+}
+
+.heroGrid{
   display:grid;
-  grid-template-columns:1.05fr .95fr;
-  gap:35px;
-  align-items:center
+  grid-template-columns:1.2fr .8fr;
+  gap:25px;
+  align-items:center;
 }
 
-.eyebrow{
-  display:inline-flex;
-  padding:8px 12px;
-  background:#e9f3ff;
-  color:var(--blue);
-  border-radius:999px;
-  font-weight:900
+.heroText h1{
+  font-size:clamp(32px,5vw,55px);
+  line-height:1.15;
+  margin:0 0 16px;
 }
 
-.hero h1{
-  font-size:clamp(38px,6vw,64px);
-  line-height:1.08;
-  margin:18px 0 15px
+.heroText h1 span{
+  color:var(--primary);
 }
 
-.hero p{
-  font-size:18px;
-  line-height:2;
+.heroText p{
   color:var(--muted);
-  max-width:650px
+  font-size:18px;
+  line-height:1.9;
 }
 
-.heroActions,
-.heroContact{
+.heroButtons{
   display:flex;
-  gap:10px;
   flex-wrap:wrap;
-  margin-top:22px
+  gap:10px;
+  margin-top:22px;
 }
 
-.heroContact{
-  margin-top:12px
-}
-
-.doctorCard,
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
+.heroCard{
+  background:white;
+  border:1px solid var(--border);
   border-radius:28px;
-  box-shadow:var(--shadow)
+  padding:25px;
+  box-shadow:var(--shadow);
 }
 
-.doctorCard{
-  padding:25px
-}
-
-.doctorHead{
-  display:flex;
-  gap:16px;
-  align-items:center
-}
-
-.doctorAvatar{
-  width:82px;
-  height:82px;
-  border-radius:25px;
+.doctorImage{
+  width:100%;
+  height:280px;
   object-fit:cover;
-  background:#e9f3ff
+  border-radius:22px;
+  background:#edf8ff;
 }
 
-.doctorHead h2{
-  margin:0 0 7px
+.doctorInfo{
+  padding-top:18px;
+}
+
+.doctorInfo h2{
+  margin:0 0 5px;
+}
+
+.specialty{
+  color:var(--primary);
+  font-weight:bold;
 }
 
 .infoLine{
-  padding:13px 0;
-  border-top:1px solid var(--line);
-  margin-top:14px
+  color:var(--muted);
+  margin:10px 0;
 }
 
-.bioText{
-  white-space:pre-wrap;
-  line-height:1.9;
-  margin-top:8px
-}
-
-.contactBtn{
-  padding:12px 16px;
+.bioBox{
+  background:#f5fbff;
+  border:1px solid var(--border);
+  padding:13px;
   border-radius:14px;
-  font-weight:900;
-  border:1px solid var(--line);
-  background:#fff
+  margin-top:14px;
+  line-height:1.8;
 }
 
-.contactBtn.phone{
-  color:var(--blue);
-  border-color:#b9d6fb
+/* SECTIONS */
+section{
+  padding:38px 0;
 }
 
-.contactBtn.whatsapp{
-  color:#087b48;
-  border-color:#bce7d1
+.sectionTitle{
+  text-align:center;
+  margin-bottom:25px;
 }
 
+.sectionTitle h2{
+  margin:0 0 8px;
+  font-size:29px;
+}
+
+.sectionTitle p{
+  color:var(--muted);
+  margin:0;
+}
+
+/* FEATURES */
 .features{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:15px;
-  margin:15px auto 45px
 }
 
 .feature{
-  padding:21px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:22px
+  background:white;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 5px 20px rgba(21,92,130,.05);
 }
 
 .featureIcon{
-  font-size:25px;
-  margin-bottom:10px
-}
-
-.feature b{
-  display:block;
-  margin-bottom:6px
-}
-
-.section{
-  padding:25px 0 45px
-}
-
-.sectionTitle{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  align-items:end;
-  margin-bottom:18px
-}
-
-.sectionTitle h2{
   font-size:30px;
-  margin:0 0 6px
+  margin-bottom:10px;
 }
 
-.slots{
+.feature h3{
+  margin:5px 0;
+}
+
+.feature p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+/* SLOTS */
+.slotsGrid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:13px
+  gap:15px;
 }
 
 .slot{
-  padding:17px;
-  border:1px solid #ccebd9;
-  background:#effaf4;
-  color:#087b48;
+  background:white;
+  border:1px solid var(--border);
   border-radius:18px;
+  padding:18px;
+  box-shadow:0 5px 20px rgba(21,92,130,.05);
+}
+
+.slotDate{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.slotTime{
+  font-size:22px;
   font-weight:900;
+  margin:7px 0 14px;
+}
+
+.empty{
   text-align:center;
-  transition:.2s
+  background:#f7fbfd;
+  border-radius:18px;
+  padding:30px;
+  color:var(--muted);
 }
 
-.slot:hover{
-  transform:translateY(-2px)
+/* TRACK */
+.trackBox{
+  max-width:650px;
+  margin:auto;
+  background:white;
+  border:1px solid var(--border);
+  padding:25px;
+  border-radius:22px;
+  box-shadow:var(--shadow);
 }
 
-.track{
-  padding:25px
-}
-
-.row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px
-}
-
-.field{
-  margin:9px 0
-}
-
-.field label{
-  display:block;
-  font-weight:900;
-  margin-bottom:7px
-}
-
-.field input,
-.field textarea,
-.field select,
-input,
-textarea,
-select{
+.input{
   width:100%;
-  padding:13px 14px;
-  border:1px solid #dbe6f0;
-  border-radius:14px;
+  border:1px solid #cfe3ee;
+  background:#fff;
+  padding:14px;
+  border-radius:13px;
   outline:none;
-  background:#fff
+  font-size:16px;
 }
 
-.field input:focus,
-.field textarea:focus,
-input:focus,
-textarea:focus,
-select:focus{
-  border-color:#7db1ef;
-  box-shadow:0 0 0 4px #1769e012
+.input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(22,135,201,.10);
 }
 
-.field textarea,
-textarea{
-  min-height:105px;
-  resize:vertical
+textarea.input{
+  min-height:120px;
+  resize:vertical;
 }
 
-.status{
-  padding:13px;
+.formGroup{
+  margin-bottom:14px;
+}
+
+.formGroup label{
+  display:block;
+  margin-bottom:7px;
+  font-weight:bold;
+}
+
+.trackResult{
+  margin-top:15px;
+  padding:15px;
   border-radius:14px;
-  background:#f3f7fb;
-  margin-top:12px;
-  line-height:1.9
+  background:#f4fbff;
+  display:none;
+  line-height:1.9;
 }
 
-.ok{
-  background:#eaf9f1;
-  color:#087b48
-}
-
-.bad{
-  background:#fff0f0;
-  color:#a82d2d
-}
-
+/* MODAL */
 .modal{
   position:fixed;
   inset:0;
-  background:#09243e99;
+  background:rgba(10,36,54,.55);
+  z-index:100;
   display:none;
   align-items:center;
   justify-content:center;
-  padding:16px;
-  z-index:50
+  padding:15px;
 }
 
-.modal.on{
-  display:flex
+.modal.active{
+  display:flex;
 }
 
 .modalCard{
   width:min(560px,100%);
   max-height:92vh;
   overflow:auto;
-  padding:24px
+  background:white;
+  border-radius:25px;
+  padding:25px;
+  box-shadow:0 25px 70px rgba(0,0,0,.25);
 }
 
-.modalTop{
+.modalHead{
   display:flex;
+  align-items:center;
   justify-content:space-between;
-  gap:12px;
-  align-items:center
+  gap:10px;
+  margin-bottom:20px;
 }
 
 .close{
+  border:0;
   width:40px;
   height:40px;
   border-radius:12px;
-  background:#eef4f9;
-  color:#53687d
+  background:#f1f6f9;
+  font-size:20px;
 }
 
-.dash{
-  display:none
+/* DASHBOARD */
+.dashboard{
+  display:none;
+  padding:25px 0 50px;
 }
 
-.dash.on{
-  display:block
+.dashboard.active{
+  display:block;
+}
+
+.dashboardHeader{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:18px;
+}
+
+.dashboardHeader h1{
+  margin:0 0 5px;
+}
+
+.dashboardHeader p{
+  color:var(--muted);
+  margin:0;
 }
 
 .dashNav{
   display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  margin:20px 0
+  gap:8px;
+  overflow:auto;
+  padding-bottom:8px;
+  margin-bottom:18px;
 }
 
-.dashNav .active{
-  background:var(--blue);
-  color:#fff
+.dashTab{
+  white-space:nowrap;
+  border:1px solid var(--border);
+  background:white;
+  color:var(--text);
+  padding:11px 15px;
+  border-radius:13px;
+  font-weight:bold;
 }
 
-.dashGrid{
+.dashTab.active{
+  background:var(--primary);
+  color:white;
+  border-color:var(--primary);
+}
+
+.dashPage{
+  display:none;
+}
+
+.dashPage.active{
+  display:block;
+}
+
+/* STATS */
+.stats{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px
-}
-
-.dashCard{
-  padding:22px
-}
-
-.statGrid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
 }
 
 .stat{
-  padding:18px;
+  border:1px solid var(--border);
+  background:white;
   border-radius:20px;
-  background:#f6f9fc;
-  border:1px solid var(--line);
-  transition:.2s
-}
-
-.stat:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 30px #102a4310
-}
-
-.stat strong{
-  display:block;
-  font-size:30px;
-  margin-top:5px
-}
-
-.statBtn{
+  padding:20px;
   text-align:right;
+}
+
+.stat button{
   width:100%;
-  font:inherit;
-  cursor:pointer
+  text-align:right;
+  border:0;
+  background:none;
+  padding:0;
 }
 
-.statBtn small{
-  display:block;
-  color:var(--blue);
-  margin-top:8px;
-  font-weight:800
+.statNumber{
+  font-size:32px;
+  font-weight:900;
+  margin-bottom:5px;
 }
 
-.booking{
-  padding:17px;
-  border:1px solid var(--line);
+.statLabel{
+  color:var(--muted);
+}
+
+/* DASH CARDS */
+.panel{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 5px 20px rgba(21,92,130,.04);
+}
+
+.panel h3{
+  margin-top:0;
+}
+
+.bookingCard,
+.appointmentCard{
+  border:1px solid var(--border);
   border-radius:18px;
-  margin:10px 0;
-  background:#fff
+  padding:16px;
+  margin-bottom:12px;
+  background:#fcfeff;
 }
 
 .bookingTop{
   display:flex;
   justify-content:space-between;
+  align-items:center;
   gap:10px;
-  align-items:center
-}
-
-.bookingNumber{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:44px;
-  height:44px;
-  border-radius:14px;
-  background:#e9f3ff;
-  color:var(--blue);
-  font-size:20px;
-  font-weight:1000
-}
-
-.actions{
-  display:flex;
-  gap:8px;
   flex-wrap:wrap;
-  margin-top:12px
 }
 
-.small{
-  padding:9px 12px;
-  border-radius:11px;
-  font-weight:800;
+.patientNumber{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  text-decoration:none
+  min-width:42px;
+  height:42px;
+  border-radius:13px;
+  background:#e8f7ff;
+  color:var(--primary2);
+  font-size:20px;
+  font-weight:900;
 }
 
-.statDescription{
-  margin-top:12px;
-  padding:14px;
-  background:#f8fbff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  line-height:1.8
-}
-
-.empty{
-  padding:22px;
-  border:1px dashed #ccd9e6;
-  border-radius:18px;
-  color:var(--muted);
-  text-align:center
-}
-
-.avatarPreview{
-  width:72px;
-  height:72px;
-  border-radius:20px;
-  object-fit:cover;
-  background:#edf5ff
-}
-
-.loginNote{
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.8
-}
-
-.footer{
-  padding:35px 0 55px;
-  color:var(--muted);
-  text-align:center
-}
-
-.divider{
-  height:1px;
-  background:var(--line);
-  margin:20px 0
-}
-
-.hidden{
-  display:none!important
-}
-
-.tab.hidden{
-  display:none
-}
-
-.statusBadge{
-  display:inline-flex;
+.status{
   padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:900
+  border-radius:9px;
+  font-size:13px;
+  font-weight:bold;
 }
 
 .statusPending{
-  background:#fff6e6;
-  color:#a45a00
+  background:#fff6df;
+  color:#a86c00;
 }
 
 .statusApproved{
-  background:#eaf9f1;
-  color:#087b48
+  background:#e7faf1;
+  color:#10875a;
 }
 
 .statusRejected{
-  background:#fff0f0;
-  color:#a82d2d
+  background:#fff0ee;
+  color:#c73527;
 }
 
-.statusCancelled{
-  background:#f1f3f6;
-  color:#687585
+.bookingActions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:13px;
 }
 
+.bookingActions a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* FILTER */
+.filters{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
+
+.filterBtn{
+  border:1px solid var(--border);
+  background:white;
+  border-radius:11px;
+  padding:9px 14px;
+  font-weight:bold;
+}
+
+.filterBtn.active{
+  background:var(--primary);
+  color:white;
+}
+
+/* SETTINGS */
+.settingsGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+.previewImage{
+  width:120px;
+  height:120px;
+  border-radius:20px;
+  object-fit:cover;
+  border:1px solid var(--border);
+  display:block;
+  margin-bottom:10px;
+}
+
+.accountActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  right:20px;
+  max-width:450px;
+  margin:auto;
+  background:#16394f;
+  color:white;
+  padding:14px 18px;
+  border-radius:14px;
+  z-index:300;
+  display:none;
+  text-align:center;
+  box-shadow:0 12px 30px rgba(0,0,0,.2);
+}
+
+.toast.show{
+  display:block;
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  padding:25px 0;
+  text-align:center;
+  color:var(--muted);
+}
+
+/* RESPONSIVE */
 @media(max-width:850px){
-  .hero{
+  .heroGrid{
     grid-template-columns:1fr;
-    padding-top:35px
   }
 
   .features{
-    grid-template-columns:1fr 1fr
+    grid-template-columns:1fr 1fr;
   }
 
-  .slots{
-    grid-template-columns:1fr 1fr
+  .slotsGrid{
+    grid-template-columns:1fr 1fr;
   }
 
-  .dashGrid{
-    grid-template-columns:1fr
-  }
-
-  .statGrid{
-    grid-template-columns:1fr 1fr
-  }
-
-  .hero h1{
-    font-size:43px
+  .stats{
+    grid-template-columns:1fr 1fr;
   }
 }
 
-@media(max-width:520px){
-  .features,
-  .slots,
-  .row,
-  .statGrid{
-    grid-template-columns:1fr
+@media(max-width:600px){
+  .brandText{
+    font-size:20px;
   }
 
-  .nav{
-    min-height:68px
-  }
-
-  .brand{
-    font-size:22px
-  }
-
-  .brandLogo{
-    width:40px;
-    height:40px;
-    border-radius:13px
-  }
-
-  .btn{
-    padding:11px 13px
-  }
-
-  .doctorCard{
-    padding:18px
+  .navActions .btn{
+    padding:9px 11px;
+    font-size:12px;
   }
 
   .hero{
-    padding-top:25px
+    padding-top:30px;
   }
 
-  .bookingTop{
+  .features,
+  .slotsGrid,
+  .settingsGrid{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .dashboardHeader{
     align-items:flex-start;
-    flex-direction:column
+    flex-direction:column;
+  }
+
+  .doctorImage{
+    height:230px;
   }
 }
 </style>
@@ -679,1044 +708,618 @@ textarea{
 
 <body>
 
-<!-- ================= HEADER ================= -->
-
-<header class="header">
-  <div class="wrap nav">
+<header id="mainHeader">
+  <div class="container nav">
 
     <div class="brand">
-      <div class="brandLogo">♥</div>
-      <div class="brandText">
-        نبض
-        <small>صحتك .. تهمنا</small>
+      <div class="logoMark">❤</div>
+      <div>
+        <div class="brandText">نبض</div>
+        <span class="brandSmall">صحتك .. تهمنا</span>
       </div>
     </div>
 
-    <button class="btn soft" onclick="openModal('loginModal')">
-      دخول الدكتور
-    </button>
+    <div class="navActions">
+      <button class="btn btnLight" onclick="callDoctor()">
+        ☎️ اتصل بالدكتور
+      </button>
+
+      <button class="btn btnSuccess" onclick="openWhatsApp()">
+        💬 واتساب
+      </button>
+
+      <button class="btn btnPrimary" onclick="openLogin()">
+        دخول الدكتور
+      </button>
+    </div>
 
   </div>
 </header>
 
 
-<!-- ================= PUBLIC PAGE ================= -->
+<main id="publicPage">
 
-<main id="publicView">
+<section class="hero">
+<div class="container heroGrid">
 
-  <div class="wrap hero">
+  <div class="heroText">
+    <h1>
+      احجز موعدك
+      <span>بسهولة</span>
+    </h1>
 
-    <section>
+    <p>
+      منصة نبض تساعدك على حجز موعدك مع الدكتور
+      ومتابعة حالة الحجز والتواصل المباشر مع العيادة.
+    </p>
 
-      <span class="eyebrow">
-        حجز ومتابعة العيادة
-      </span>
+    <div class="heroButtons">
 
-      <h1>
-        احجز موعدك بسهولة
-      </h1>
+      <button class="btn btnPrimary" onclick="openBooking()">
+        📅 احجز موعدك الآن
+      </button>
 
-      <p>
-        اختار الموعد المناسب ليك، وابعت طلب الحجز في ثواني،
-        وتابع حالة طلبك من نفس الصفحة بدون تعقيد.
-      </p>
+      <button class="btn btnLight" onclick="scrollToTrack()">
+        🔎 متابعة حجز
+      </button>
 
-      <div class="heroActions">
+      <button class="btn btnLight" onclick="callDoctor()">
+        ☎️ اتصل بالدكتور
+      </button>
 
-        <button
-          class="btn primary"
-          onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">
-          📅 احجز موعدك الآن
-        </button>
+      <button class="btn btnSuccess" onclick="openWhatsApp()">
+        💬 تواصل واتساب
+      </button>
 
-        <button
-          class="btn soft"
-          onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'})">
-          🔎 متابعة حجز
-        </button>
-
-      </div>
-
-
-      <!-- PHONE + WHATSAPP -->
-
-      <div class="heroContact">
-
-        <button
-          class="contactBtn phone"
-          onclick="callDoctor()">
-          📞 اتصل بالدكتور
-        </button>
-
-        <button
-          class="contactBtn whatsapp"
-          onclick="openWhatsApp()">
-          💬 تواصل عبر واتساب
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- DOCTOR CARD -->
-
-    <section class="doctorCard">
-
-      <div class="doctorHead">
-
-        <img
-          id="doctorImage"
-          class="doctorAvatar"
-          src="logo.svg"
-          alt="الطبيب">
-
-        <div>
-
-          <h2 id="doctorName">
-            بيانات الطبيب
-          </h2>
-
-          <div id="specialty" class="muted">
-            التخصص الطبي
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="infoLine">
-        📱 <b>واتساب</b>
-        <div id="wa" class="muted">
-          لم تتم إضافة الرقم بعد
-        </div>
-      </div>
-
-
-      <div class="infoLine">
-        📍 <b>عنوان العيادة</b>
-        <div id="address" class="muted">
-          لم تتم إضافة العنوان بعد
-        </div>
-      </div>
-
-
-      <div class="infoLine">
-        🕐 <b>مواعيد العمل</b>
-        <div id="workingHours" class="muted">
-          لم تتم إضافة المواعيد بعد
-        </div>
-      </div>
-
-
-      <!-- BIO -->
-
-      <div id="bioLine" class="infoLine hidden">
-
-        <div>
-          📖 <b>السيرة الذاتية للدكتور</b>
-        </div>
-
-        <div
-          id="doctorBio"
-          class="muted bioText">
-        </div>
-
-      </div>
-
-    </section>
-
+    </div>
   </div>
 
 
-  <!-- FEATURES -->
+  <div class="heroCard">
 
-  <div class="wrap features">
+    <img id="doctorImage"
+         class="doctorImage"
+         src="logo.svg"
+         alt="الدكتور">
+
+    <div class="doctorInfo">
+
+      <h2 id="doctorName">دكتور العيادة</h2>
+
+      <div class="specialty" id="doctorSpecialty">
+        الطبيب
+      </div>
+
+      <div class="infoLine">
+        📍 <span id="doctorAddress">العنوان غير محدد</span>
+      </div>
+
+      <div class="infoLine">
+        🕐 <span id="doctorHours">مواعيد العمل غير محددة</span>
+      </div>
+
+      <div id="bioLine" class="bioBox" style="display:none"></div>
+
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+
+<section>
+<div class="container">
+
+  <div class="sectionTitle">
+    <h2>لماذا نبض؟</h2>
+    <p>كل ما تحتاجه لحجز ومتابعة موعدك بسهولة</p>
+  </div>
+
+  <div class="features">
 
     <div class="feature">
       <div class="featureIcon">🔒</div>
-      <b>خصوصية تامة</b>
-      <span class="muted">
-        بيانات المرضى لا تظهر لبعضهم.
-      </span>
+      <h3>خصوصية</h3>
+      <p>بيانات الحجز محفوظة بطريقة آمنة.</p>
     </div>
 
     <div class="feature">
-      <div class="featureIcon">🕐</div>
-      <b>مواعيد مرنة</b>
-      <span class="muted">
-        الدكتور يتحكم في كل المواعيد.
-      </span>
+      <div class="featureIcon">📅</div>
+      <h3>مواعيد مرنة</h3>
+      <p>اختر الموعد المناسب لك من المواعيد المتاحة.</p>
     </div>
 
     <div class="feature">
       <div class="featureIcon">⚡</div>
-      <b>حجز سريع</b>
-      <span class="muted">
-        طلب الحجز يتم في ثوانٍ.
-      </span>
+      <h3>حجز سريع</h3>
+      <p>احجز موعدك في خطوات بسيطة.</p>
     </div>
 
     <div class="feature">
       <div class="featureIcon">💬</div>
-      <b>تواصل مباشر</b>
-      <span class="muted">
-        بيانات التواصل قابلة للتعديل.
-      </span>
+      <h3>تواصل مباشر</h3>
+      <p>تواصل مع الدكتور عن طريق الهاتف أو واتساب.</p>
     </div>
 
   </div>
 
+</div>
+</section>
 
-  <!-- AVAILABLE APPOINTMENTS -->
 
-  <section
-    class="section wrap"
-    id="booking">
+<section id="appointmentsSection">
+<div class="container">
 
-    <div class="sectionTitle">
+  <div class="sectionTitle">
+    <h2>المواعيد المتاحة</h2>
+    <p>اختر الموعد المناسب لك</p>
+  </div>
 
-      <div>
+  <div id="slots" class="slotsGrid">
+    <div class="empty">جاري تحميل المواعيد...</div>
+  </div>
 
-        <h2>
-          المواعيد المتاحة
-        </h2>
+</div>
+</section>
 
-        <div class="muted">
-          اختار الموعد المناسب ليك
-        </div>
 
-      </div>
+<section id="trackSection">
+<div class="container">
 
+  <div class="sectionTitle">
+    <h2>متابعة الحجز</h2>
+    <p>استخدم رقم الحجز أو رقم ترتيبك اليومي</p>
+  </div>
+
+  <div class="trackBox">
+
+    <div class="formGroup">
+      <label>رقم الحجز / رقم الترتيب</label>
+      <input
+        id="trackCode"
+        class="input"
+        type="text"
+        inputmode="numeric"
+        placeholder="مثال: 3">
     </div>
 
-    <div
-      id="slots"
-      class="slots">
+    <button class="btn btnPrimary" style="width:100%" onclick="trackBooking()">
+      متابعة الحجز
+    </button>
 
-      <div class="empty">
-        جاري تحميل المواعيد...
-      </div>
+    <div id="trackResult" class="trackResult"></div>
 
-    </div>
+  </div>
 
-  </section>
-
-
-  <!-- TRACK BOOKING -->
-
-  <section
-    class="section wrap"
-    id="track">
-
-    <div class="card track">
-
-      <h2>
-        متابعة حجزك
-      </h2>
-
-      <p class="muted">
-        اكتب رقم العميل الذي ظهر لك بعد إرسال الطلب،
-        وهو ترتيبك في يوم الموعد.
-      </p>
-
-      <div class="row">
-
-        <input
-          id="trackCode"
-          inputmode="numeric"
-          placeholder="مثال: 3">
-
-        <button
-          class="btn primary"
-          onclick="trackBooking()">
-          متابعة الحالة
-        </button>
-
-      </div>
-
-      <div id="trackResult"></div>
-
-    </div>
-
-  </section>
+</div>
+</section>
 
 </main>
 
 
-<!-- ================= DASHBOARD ================= -->
+<!-- DASHBOARD -->
+<section id="dashboard" class="dashboard">
 
-<section
-  id="dashboard"
-  class="dash">
+<div class="container">
 
-  <div class="wrap section">
+  <div class="dashboardHeader">
 
-    <div class="sectionTitle">
-
-      <div>
-
-        <span class="eyebrow">
-          لوحة الدكتور
-        </span>
-
-        <h2 style="margin-top:12px">
-          إدارة العيادة
-        </h2>
-
-        <div class="muted">
-          تحكم في الحجوزات والمواعيد وبيانات الدكتور وأرقام التواصل.
-        </div>
-
-      </div>
-
-      <button
-        class="btn soft"
-        onclick="logout()">
-        تسجيل الخروج
-      </button>
-
+    <div>
+      <h1>لوحة تحكم الدكتور</h1>
+      <p>إدارة العيادة والحجوزات والمواعيد</p>
     </div>
 
-
-    <!-- DASHBOARD NAV -->
-
-    <div class="dashNav">
-
-      <button
-        id="navOverview"
-        class="btn soft"
-        onclick="showTab('overview')">
-        نظرة عامة
-      </button>
-
-      <button
-        id="navBookings"
-        class="btn soft"
-        onclick="showTab('bookingsTab')">
-        الحجوزات
-      </button>
-
-      <button
-        id="navSlots"
-        class="btn soft"
-        onclick="showTab('slotsTab')">
-        المواعيد
-      </button>
-
-      <button
-        id="navSettings"
-        class="btn soft"
-        onclick="showTab('settingsTab')">
-        إعدادات الطبيب
-      </button>
-
-      <button
-        id="navAccount"
-        class="btn soft"
-        onclick="showTab('accountTab')">
-        الحساب وكلمة المرور
-      </button>
-
-    </div>
-
-
-    <!-- ================= OVERVIEW ================= -->
-
-    <div
-      id="overview"
-      class="tab">
-
-      <div class="statGrid">
-
-        <!-- PENDING -->
-
-        <button
-          class="stat statBtn"
-          onclick="showTab('bookingsTab');setBookingFilter('pending')">
-
-          <span class="muted">
-            طلبات الانتظار
-          </span>
-
-          <strong id="statPending">
-            0
-          </strong>
-
-          <small>
-            اضغط لفتح الطلبات
-          </small>
-
-        </button>
-
-
-        <!-- APPROVED -->
-
-        <button
-          class="stat statBtn"
-          onclick="showTab('bookingsTab');setBookingFilter('approved')">
-
-          <span class="muted">
-            المواعيد المؤكدة
-          </span>
-
-          <strong id="statApproved">
-            0
-          </strong>
-
-          <small>
-            اضغط لعرض المواعيد
-          </small>
-
-        </button>
-
-
-        <!-- AVAILABLE -->
-
-        <button
-          class="stat statBtn"
-          onclick="showTab('slotsTab')">
-
-          <span class="muted">
-            المواعيد المتاحة
-          </span>
-
-          <strong id="statAvailable">
-            0
-          </strong>
-
-          <small>
-            اضغط لإدارة المواعيد
-          </small>
-
-        </button>
-
-      </div>
-
-
-      <div
-        id="overviewInfo"
-        class="statDescription">
-
-        من هنا تقدر تفتح أي قسم وتشوف تفاصيله مباشرة.
-
-      </div>
-
-    </div>
-
-
-    <!-- ================= BOOKINGS ================= -->
-
-    <div
-      id="bookingsTab"
-      class="tab hidden">
-
-      <div class="card dashCard">
-
-        <div class="sectionTitle">
-
-          <div>
-
-            <h2>
-              الحجوزات
-            </h2>
-
-            <div class="muted">
-              الرقم بجانب كل عميل هو ترتيب المريض في يوم الموعد.
-            </div>
-
-          </div>
-
-          <div class="actions">
-
-            <button
-              class="btn small soft"
-              onclick="setBookingFilter('all')">
-              الكل
-            </button>
-
-            <button
-              class="btn small warning"
-              onclick="setBookingFilter('pending')">
-              طلبات الانتظار
-            </button>
-
-            <button
-              class="btn small success"
-              onclick="setBookingFilter('approved')">
-              المواعيد المؤكدة
-            </button>
-
-          </div>
-
-        </div>
-
-        <div id="bookingsList">
-
-          <div class="empty">
-            جاري التحميل...
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ================= SLOTS ================= -->
-
-    <div
-      id="slotsTab"
-      class="tab hidden">
-
-      <div class="dashGrid">
-
-
-        <!-- ADD SLOT -->
-
-        <div class="card dashCard">
-
-          <h2>
-            إضافة موعد
-          </h2>
-
-          <div class="field">
-
-            <label>
-              التاريخ
-            </label>
-
-            <input
-              id="newDate"
-              type="date">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              الوقت
-            </label>
-
-            <input
-              id="newTime"
-              type="time">
-
-          </div>
-
-
-          <button
-            class="btn primary"
-            onclick="addSlot()">
-            + إضافة الموعد
-          </button>
-
-          <div id="slotMsg"></div>
-
-        </div>
-
-
-        <!-- ALL SLOTS -->
-
-        <div class="card dashCard">
-
-          <h2>
-            كل المواعيد
-          </h2>
-
-          <div class="muted">
-            يمكنك حذف أي موعد لم تعد تحتاجه.
-          </div>
-
-          <div id="doctorSlots">
-
-            <div class="empty">
-              جاري التحميل...
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ================= SETTINGS ================= -->
-
-    <div
-      id="settingsTab"
-      class="tab hidden">
-
-      <div class="card dashCard">
-
-        <h2>
-          بيانات العيادة والطبيب
-        </h2>
-
-
-        <div class="row">
-
-          <div class="field">
-
-            <label>
-              اسم الدكتور
-            </label>
-
-            <input
-              id="sName"
-              placeholder="اكتب اسم الدكتور">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              التخصص
-            </label>
-
-            <input
-              id="sSpec"
-              placeholder="مثال: طبيب عام">
-
-          </div>
-
-        </div>
-
-
-        <!-- BIO -->
-
-        <div class="field">
-
-          <label>
-            السيرة الذاتية للدكتور
-          </label>
-
-          <textarea
-            id="sDesc"
-            placeholder="اكتب السيرة الذاتية للدكتور هنا. يمكنك تعديلها أو مسحها بالكامل، وإذا تركتها فارغة لن تظهر للمريض."></textarea>
-
-        </div>
-
-
-        <div class="row">
-
-          <!-- IMAGE -->
-
-          <div class="field">
-
-            <label>
-              صورة الدكتور
-            </label>
-
-            <input
-              id="sImageFile"
-              type="file"
-              accept="image/*"
-              onchange="previewDoctorImage(event)">
-
-            <div
-              style="margin-top:10px;display:flex;align-items:center;gap:12px">
-
-              <img
-                id="imagePreview"
-                class="avatarPreview"
-                src="logo.svg"
-                alt="معاينة الصورة">
-
-              <span
-                id="imageMsg"
-                class="muted">
-                اختار صورة من ملفات الجهاز
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <!-- WHATSAPP -->
-
-          <div class="field">
-
-            <label>
-              رقم واتساب الدكتور
-            </label>
-
-            <input
-              id="sWa"
-              placeholder="010xxxxxxxx"
-              inputmode="tel">
-
-            <div class="loginNote">
-              الرقم الذي سيُستخدم عند الضغط على زر واتساب.
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="row">
-
-
-          <!-- PHONE -->
-
-          <div class="field">
-
-            <label>
-              رقم هاتف الدكتور
-            </label>
-
-            <input
-              id="sPhone"
-              placeholder="010xxxxxxxx"
-              inputmode="tel">
-
-            <div class="loginNote">
-              الضغط على زر الاتصال يفتح تطبيق الهاتف والرقم جاهز للاتصال.
-            </div>
-
-          </div>
-
-
-          <!-- ADDRESS -->
-
-          <div class="field">
-
-            <label>
-              عنوان العيادة
-            </label>
-
-            <input
-              id="sAddress"
-              placeholder="عنوان العيادة">
-
-          </div>
-
-        </div>
-
-
-        <div class="field">
-
-          <label>
-            مواعيد العمل
-          </label>
-
-          <input
-            id="sHours"
-            placeholder="السبت - الخميس | 4 م - 10 م">
-
-        </div>
-
-
-        <button
-          class="btn primary"
-          onclick="saveSettings()">
-          حفظ كل بيانات العيادة
-        </button>
-
-        <div id="settingsMsg"></div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ================= ACCOUNT ================= -->
-
-    <div
-      id="accountTab"
-      class="tab hidden">
-
-      <div class="card dashCard">
-
-        <h2>
-          الحساب وكلمة المرور
-        </h2>
-
-        <p class="loginNote">
-          الحساب مربوط بـ Supabase Auth.
-          يمكنك تغيير كلمة المرور من هنا.
-        </p>
-
-
-        <div class="field">
-
-          <label>
-            البريد الإلكتروني الحالي
-          </label>
-
-          <input
-            id="accountEmail"
-            disabled>
-
-        </div>
-
-
-        <div class="field">
-
-          <label>
-            تغيير البريد الإلكتروني
-          </label>
-
-          <input
-            id="newEmail"
-            type="email"
-            placeholder="البريد الجديد">
-
-        </div>
-
-
-        <button
-          class="btn soft"
-          onclick="changeEmail()">
-          تحديث البريد
-        </button>
-
-
-        <hr
-          style="border:0;border-top:1px solid var(--line);margin:22px 0">
-
-
-        <div class="row">
-
-          <div class="field">
-
-            <label>
-              كلمة المرور الجديدة
-            </label>
-
-            <input
-              id="newPassword"
-              type="password"
-              minlength="8"
-              placeholder="8 أحرف أو أكثر">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              تأكيد كلمة المرور
-            </label>
-
-            <input
-              id="newPassword2"
-              type="password"
-              minlength="8"
-              placeholder="أعد كتابة كلمة المرور">
-
-          </div>
-
-        </div>
-
-
-        <button
-          class="btn primary"
-          onclick="changePassword()">
-          تغيير كلمة المرور
-        </button>
-
-        <div id="accountMsg"></div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= BOOKING MODAL ================= -->
-
-<div
-  id="bookModal"
-  class="modal">
-
-  <div class="card modalCard">
-
-    <div class="modalTop">
-
-      <h2>
-        تأكيد طلب الحجز
-      </h2>
-
-      <button
-        class="close"
-        onclick="closeModal('bookModal')">
-        ×
-      </button>
-
-    </div>
-
-
-    <p
-      id="chosen"
-      class="muted">
-    </p>
-
-
-    <div class="field">
-
-      <label>
-        الاسم بالكامل
-      </label>
-
-      <input
-        id="pName"
-        placeholder="اسم المريض">
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        رقم الهاتف
-      </label>
-
-      <input
-        id="pPhone"
-        placeholder="01xxxxxxxxx"
-        inputmode="tel">
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        سبب الزيارة
-        <span class="muted">
-          (اختياري)
-        </span>
-      </label>
-
-      <textarea
-        id="pReason"
-        placeholder="اكتب سبب الزيارة إن أحببت"></textarea>
-
-    </div>
-
-
-    <button
-      class="btn primary"
-      onclick="sendBooking()">
-      إرسال طلب الحجز
+    <button class="btn btnDanger" onclick="logout()">
+      تسجيل الخروج
     </button>
 
-    <div id="bookMsg"></div>
-
   </div>
 
-</div>
 
+  <div class="dashNav">
 
-<!-- ================= LOGIN MODAL ================= -->
-
-<div
-  id="loginModal"
-  class="modal">
-
-  <div class="card modalCard">
-
-    <div class="modalTop">
-
-      <h2>
-        دخول الدكتور
-      </h2>
-
-      <button
-        class="close"
-        onclick="closeModal('loginModal')">
-        ×
-      </button>
-
-    </div>
-
-
-    <p class="loginNote">
-      استخدم البريد وكلمة المرور الخاصة بحساب الدكتور.
-    </p>
-
-
-    <div class="field">
-
-      <label>
-        البريد الإلكتروني
-      </label>
-
-      <input
-        id="loginEmail"
-        type="email"
-        autocomplete="off"
-        autocapitalize="none"
-        spellcheck="false"
-        placeholder="doctor@example.com">
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        كلمة المرور
-      </label>
-
-      <input
-        id="loginPassword"
-        type="password"
-        autocomplete="current-password"
-        placeholder="كلمة المرور">
-
-    </div>
-
-
-    <button
-      class="btn primary"
-      onclick="login()">
-      دخول آمن
+    <button class="dashTab active"
+            data-page="overview"
+            onclick="showDashPage('overview',this)">
+      نظرة عامة
     </button>
 
-    <div id="loginMsg"></div>
+    <button class="dashTab"
+            data-page="bookings"
+            onclick="showDashPage('bookings',this)">
+      طلبات الانتظار
+    </button>
+
+    <button class="dashTab"
+            data-page="approved"
+            onclick="showDashPage('approved',this)">
+      المواعيد المؤكدة
+    </button>
+
+    <button class="dashTab"
+            data-page="slots"
+            onclick="showDashPage('slots',this)">
+      المواعيد المتاحة
+    </button>
+
+    <button class="dashTab"
+            data-page="settings"
+            onclick="showDashPage('settings',this)">
+      إعدادات العيادة
+    </button>
+
+    <button class="dashTab"
+            data-page="account"
+            onclick="showDashPage('account',this)">
+      الحساب
+    </button>
 
   </div>
 
-</div>
 
+  <!-- OVERVIEW -->
+  <div id="dash-overview" class="dashPage active">
 
-<footer class="footer">
+    <div class="stats">
 
-  <div class="wrap">
+      <div class="stat">
+        <button onclick="showDashPage('bookings')">
+          <div class="statNumber" id="pendingCount">0</div>
+          <div class="statLabel">طلبات الانتظار</div>
+        </button>
+      </div>
 
-    <b>
-      نبض
-    </b>
+      <div class="stat">
+        <button onclick="showDashPage('approved')">
+          <div class="statNumber" id="approvedCount">0</div>
+          <div class="statLabel">المواعيد المؤكدة</div>
+        </button>
+      </div>
+
+      <div class="stat">
+        <button onclick="showDashPage('slots')">
+          <div class="statNumber" id="availableCount">0</div>
+          <div class="statLabel">المواعيد المتاحة</div>
+        </button>
+      </div>
+
+      <div class="stat">
+        <button onclick="loadBookings()">
+          <div class="statNumber" id="totalCount">0</div>
+          <div class="statLabel">إجمالي الحجوزات</div>
+        </button>
+      </div>
+
+    </div>
 
     <br>
 
-    <span>
-      صحتك .. تهمنا
-    </span>
+    <div class="panel">
+      <h3>آخر الحجوزات</h3>
+      <div id="overviewBookings">
+        جاري التحميل...
+      </div>
+    </div>
 
   </div>
 
+
+  <!-- BOOKINGS -->
+  <div id="dash-bookings" class="dashPage">
+
+    <div class="panel">
+
+      <h3>الحجوزات</h3>
+
+      <div class="filters">
+
+        <button class="filterBtn active"
+                onclick="setBookingFilter('all',this)">
+          الكل
+        </button>
+
+        <button class="filterBtn"
+                onclick="setBookingFilter('pending',this)">
+          الانتظار
+        </button>
+
+        <button class="filterBtn"
+                onclick="setBookingFilter('approved',this)">
+          المؤكدة
+        </button>
+
+        <button class="filterBtn"
+                onclick="setBookingFilter('rejected',this)">
+          المرفوضة
+        </button>
+
+      </div>
+
+      <div id="bookingsList">
+        جاري التحميل...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- APPROVED -->
+  <div id="dash-approved" class="dashPage">
+
+    <div class="panel">
+
+      <h3>المواعيد المؤكدة</h3>
+
+      <div id="approvedList">
+        جاري التحميل...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SLOTS -->
+  <div id="dash-slots" class="dashPage">
+
+    <div class="panel">
+
+      <h3>إضافة موعد متاح</h3>
+
+      <div class="settingsGrid">
+
+        <div class="formGroup">
+          <label>التاريخ</label>
+          <input id="slotDate" class="input" type="date">
+        </div>
+
+        <div class="formGroup">
+          <label>الوقت</label>
+          <input id="slotTime" class="input" type="time">
+        </div>
+
+      </div>
+
+      <button class="btn btnPrimary" onclick="addSlot()">
+        + إضافة الموعد
+      </button>
+
+    </div>
+
+    <br>
+
+    <div class="panel">
+
+      <h3>المواعيد الموجودة</h3>
+
+      <div id="dashboardSlots">
+        جاري التحميل...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SETTINGS -->
+  <div id="dash-settings" class="dashPage">
+
+    <div class="panel">
+
+      <h3>بيانات الدكتور والعيادة</h3>
+
+      <div class="settingsGrid">
+
+        <div class="formGroup">
+          <label>اسم الدكتور</label>
+          <input id="setDoctorName" class="input">
+        </div>
+
+        <div class="formGroup">
+          <label>التخصص</label>
+          <input id="setSpecialty" class="input">
+        </div>
+
+        <div class="formGroup full">
+          <label>السيرة الذاتية للدكتور</label>
+
+          <textarea
+            id="setBiography"
+            class="input"
+            placeholder="اكتب السيرة الذاتية للدكتور هنا... ويمكن تركها فارغة"></textarea>
+
+          <small style="color:#6c8498">
+            إذا تركتها فارغة لن تظهر للمرضى.
+          </small>
+        </div>
+
+        <div class="formGroup">
+          <label>رقم الهاتف</label>
+          <input
+            id="setPhone"
+            class="input"
+            type="tel"
+            placeholder="مثال: 2010xxxxxxxx">
+        </div>
+
+        <div class="formGroup">
+          <label>رقم واتساب</label>
+          <input
+            id="setWhatsApp"
+            class="input"
+            type="tel"
+            placeholder="مثال: 2010xxxxxxxx">
+        </div>
+
+        <div class="formGroup">
+          <label>العنوان</label>
+          <input id="setAddress" class="input">
+        </div>
+
+        <div class="formGroup">
+          <label>مواعيد العمل</label>
+          <input id="setHours" class="input">
+        </div>
+
+        <div class="formGroup full">
+
+          <label>صورة الدكتور / شعار العيادة</label>
+
+          <img
+            id="settingsImagePreview"
+            class="previewImage"
+            src="logo.svg"
+            alt="الصورة">
+
+          <input
+            id="doctorImageFile"
+            type="file"
+            accept="image/*"
+            class="input">
+
+          <br>
+
+          <button class="btn btnLight" onclick="uploadDoctorImage()">
+            رفع الصورة
+          </button>
+
+        </div>
+
+      </div>
+
+      <br>
+
+      <button class="btn btnPrimary" onclick="saveSettings()">
+        حفظ كل البيانات
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ACCOUNT -->
+  <div id="dash-account" class="dashPage">
+
+    <div class="panel">
+
+      <h3>إعدادات الحساب</h3>
+
+      <div class="formGroup">
+        <label>البريد الإلكتروني</label>
+        <input id="accountEmail" class="input">
+      </div>
+
+      <button class="btn btnPrimary" onclick="changeEmail()">
+        تغيير البريد
+      </button>
+
+      <hr style="border:0;border-top:1px solid #e5eef3;margin:25px 0">
+
+      <div class="formGroup">
+        <label>كلمة المرور الجديدة</label>
+        <input id="newPassword" class="input" type="password">
+      </div>
+
+      <button class="btn btnWarning" onclick="changePassword()">
+        تغيير كلمة المرور
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+
+<footer>
+  <div class="container">
+    <strong>نبض</strong>
+    <br>
+    <span>صحتك .. تهمنا</span>
+  </div>
 </footer>
 
 
-<script>
+<!-- BOOKING MODAL -->
+<div id="bookingModal" class="modal">
 
-/* =========================================================
+  <div class="modalCard">
+
+    <div class="modalHead">
+      <h2>حجز موعد</h2>
+      <button class="close" onclick="closeModal('bookingModal')">×</button>
+    </div>
+
+    <div class="formGroup">
+      <label>اسم المريض</label>
+      <input id="patientName" class="input">
+    </div>
+
+    <div class="formGroup">
+      <label>رقم الهاتف</label>
+      <input id="patientPhone" class="input" type="tel">
+    </div>
+
+    <div class="formGroup">
+      <label>سبب الحجز - اختياري</label>
+      <textarea id="patientReason" class="input"></textarea>
+    </div>
+
+    <input id="selectedSlotId" type="hidden">
+
+    <button class="btn btnPrimary"
+            style="width:100%"
+            onclick="sendBooking()">
+      تأكيد الحجز
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal">
+
+  <div class="modalCard">
+
+    <div class="modalHead">
+      <h2>دخول الدكتور</h2>
+      <button class="close" onclick="closeModal('loginModal')">×</button>
+    </div>
+
+    <div class="formGroup">
+      <label>البريد الإلكتروني</label>
+      <input id="loginEmail" class="input" type="email">
+    </div>
+
+    <div class="formGroup">
+      <label>كلمة المرور</label>
+      <input id="loginPassword" class="input" type="password">
+    </div>
+
+    <button class="btn btnPrimary"
+            style="width:100%"
+            onclick="login()">
+      دخول
+    </button>
+
+  </div>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+/* =========================
    SUPABASE
-========================================================= */
+========================= */
 
 const SUPABASE_URL =
 'https://rgoamjtvynjhmpjnbhdz.supabase.co';
@@ -1724,2083 +1327,1493 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
 'sb_publishable_JX98F7bl5kCc93s53EzGJA_mTPaWJT7';
 
-const CLINIC_ID =
-'clinic-001';
+const CLINIC_ID = 'clinic-001';
 
-
-/* =========================================================
-   GLOBAL STATE
-========================================================= */
-
-let db = null;
-
-let selectedSlot = null;
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  {
+    auth:{
+      persistSession:true,
+      storage:window.sessionStorage,
+      autoRefreshToken:true,
+      detectSessionInUrl:true
+    }
+  }
+);
 
 let currentUser = null;
-
-let bookingFilter = 'all';
-
-
-let settings = {
-  doctor_name:'',
-  specialty:'',
-  description:'',
-  doctor_image:'',
-  whatsapp:'',
-  phone:'',
-  address:'',
-  working_hours:'',
-  facebook:'',
-  instagram:'',
-  website:'',
-  extra_link:''
-};
+let currentFilter = 'all';
+let clinicSettings = {};
+let allBookings = [];
 
 
-/* =========================================================
+/* =========================
    HELPERS
-========================================================= */
+========================= */
 
-const $ =
-id => document.getElementById(id);
+function toast(message){
+  const el = document.getElementById('toast');
 
+  el.textContent = message;
+  el.classList.add('show');
 
-function ready(){
-
-  return (
-    SUPABASE_URL.startsWith('https://') &&
-    SUPABASE_ANON_KEY &&
-    !SUPABASE_URL.includes('ضع_')
-  );
-
+  setTimeout(()=>{
+    el.classList.remove('show');
+  },3000);
 }
-
-
-function esc(v){
-
-  return String(v ?? '')
-    .replace(
-      /[&<>"']/g,
-      m => ({
-        '&':'&amp;',
-        '<':'&lt;',
-        '>':'&gt;',
-        '"':'&quot;',
-        "'":'&#39;'
-      }[m])
-    );
-
-}
-
-
-function notice(id,text,type='status'){
-
-  const el = $(id);
-
-  if(!el) return;
-
-  el.innerHTML =
-    `<div class="status ${type}">${text}</div>`;
-
-}
-
-
-function openModal(id){
-
-  $(id)?.classList.add('on');
-
-}
-
 
 function closeModal(id){
-
-  $(id)?.classList.remove('on');
-
+  document.getElementById(id).classList.remove('active');
 }
 
+function openLogin(){
+  document.getElementById('loginModal').classList.add('active');
+}
 
-function formatDate(d){
+function openBooking(slotId=''){
+  document.getElementById('selectedSlotId').value = slotId;
+  document.getElementById('bookingModal').classList.add('active');
+}
+
+function scrollToTrack(){
+  document.getElementById('trackSection')
+    .scrollIntoView({behavior:'smooth'});
+}
+
+function cleanPhone(phone){
+  return String(phone || '')
+    .replace(/\s+/g,'')
+    .replace(/^00/,'+');
+}
+
+function whatsappNumber(phone){
+  let p = cleanPhone(phone);
+
+  if(p.startsWith('+')){
+    return p.substring(1);
+  }
+
+  if(p.startsWith('0')){
+    return '20' + p.substring(1);
+  }
+
+  return p;
+}
+
+function formatDate(date){
+  if(!date) return '';
 
   try{
-
-    return new Intl.DateTimeFormat(
+    return new Date(date).toLocaleDateString(
       'ar-EG',
       {
         weekday:'long',
-        day:'numeric',
-        month:'long'
-      }
-    ).format(
-      new Date(d+'T00:00:00')
-    );
-
-  }catch{
-
-    return d;
-
-  }
-
-}
-
-
-function formatDateTime(date,time){
-
-  return `${formatDate(date)} — ${String(time||'').slice(0,5)}`;
-
-}
-
-
-function normalizePhone(v){
-
-  let x =
-    String(v || '')
-      .replace(/[^0-9+]/g,'');
-
-  if(x.startsWith('00'))
-    x='+'+x.slice(2);
-
-  if(x.startsWith('01'))
-    x='+20'+x.slice(1);
-
-  return x.replace('+','');
-
-}
-
-
-function statusText(s){
-
-  if(s==='pending')
-    return 'في انتظار موافقة الدكتور';
-
-  if(s==='approved' || s==='accepted')
-    return 'تم تأكيد الحجز';
-
-  if(s==='cancelled')
-    return 'تم إلغاء الحجز';
-
-  if(s==='rejected')
-    return 'تم رفض الحجز';
-
-  return 'حالة غير معروفة';
-
-}
-
-
-function statusBadge(s){
-
-  if(s==='pending')
-    return `<span class="statusBadge statusPending">في الانتظار</span>`;
-
-  if(s==='approved' || s==='accepted')
-    return `<span class="statusBadge statusApproved">مؤكد</span>`;
-
-  if(s==='rejected')
-    return `<span class="statusBadge statusRejected">مرفوض</span>`;
-
-  if(s==='cancelled')
-    return `<span class="statusBadge statusCancelled">ملغي</span>`;
-
-  return '';
-
-}
-
-
-/* =========================================================
-   CONTACT
-========================================================= */
-
-function callDoctor(){
-
-  const number =
-    String(settings.phone || '').trim();
-
-  if(!number){
-
-    alert(
-      'رقم هاتف الدكتور لم تتم إضافته بعد من لوحة التحكم.'
-    );
-
-    return;
-
-  }
-
-  /* يفتح تطبيق الهاتف فقط ولا يبدأ المكالمة تلقائيًا */
-
-  window.location.href =
-    'tel:' + number;
-
-}
-
-
-function openWhatsApp(){
-
-  const number =
-    normalizePhone(settings.whatsapp);
-
-  if(!number){
-
-    alert(
-      'رقم واتساب الدكتور لم تتم إضافته بعد من لوحة التحكم.'
-    );
-
-    return;
-
-  }
-
-  window.open(
-    'https://wa.me/'+number,
-    '_blank',
-    'noopener'
-  );
-
-}
-
-
-/* =========================================================
-   DASHBOARD TABS
-========================================================= */
-
-function showTab(id){
-
-  document
-    .querySelectorAll('.tab')
-    .forEach(
-      x => x.classList.add('hidden')
-    );
-
-
-  const target = $(id);
-
-  if(target)
-    target.classList.remove('hidden');
-
-
-  document
-    .querySelectorAll('.dashNav .btn')
-    .forEach(
-      x => x.classList.remove('active')
-    );
-
-
-  const map = {
-
-    overview:'navOverview',
-
-    bookingsTab:'navBookings',
-
-    slotsTab:'navSlots',
-
-    settingsTab:'navSettings',
-
-    accountTab:'navAccount'
-
-  };
-
-
-  if(map[id] && $(map[id]))
-    $(map[id]).classList.add('active');
-
-
-  if(id==='bookingsTab')
-    loadBookings();
-
-
-  if(id==='slotsTab')
-    loadAllSlots();
-
-
-  if(id==='overview')
-    refreshStats();
-
-}
-
-
-/* =========================================================
-   INIT
-========================================================= */
-
-async function init(){
-
-  if(!ready()){
-
-    $('slots').innerHTML =
-      `<div class="empty">
-        بيانات Supabase غير مكتملة.
-      </div>`;
-
-    return;
-
-  }
-
-
-  db =
-    supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY,
-      {
-        auth:{
-          persistSession:true,
-          storage:window.sessionStorage,
-          autoRefreshToken:true,
-          detectSessionInUrl:true
-        }
+        year:'numeric',
+        month:'long',
+        day:'numeric'
       }
     );
-
-
-  const {
-    data:{session}
-  } =
-    await db.auth.getSession();
-
-
-  if(session){
-
-    currentUser =
-      session.user;
-
-    await openDashboard();
-
+  }catch(e){
+    return date;
   }
+}
 
+function formatTime(time){
+  if(!time) return '';
 
-  await loadSettings();
+  const parts = String(time).split(':');
+  const h = Number(parts[0]);
+  const m = parts[1] || '00';
 
-  await loadPublicSlots();
+  const d = new Date();
+  d.setHours(h,m,0,0);
 
-
-  db.auth.onAuthStateChange(
-    async (_event,session)=>{
-
-      currentUser =
-        session?.user || null;
-
-      if(currentUser){
-
-        await openDashboard();
-
-      }else{
-
-        showPublic();
-
-      }
-
+  return d.toLocaleTimeString(
+    'ar-EG',
+    {
+      hour:'numeric',
+      minute:'2-digit'
     }
   );
-
-
-  /* live bookings */
-
-  db.channel('nabd-live-bookings')
-
-    .on(
-      'postgres_changes',
-      {
-        event:'*',
-        schema:'public',
-        table:'bookings',
-        filter:`clinic_id=eq.${CLINIC_ID}`
-      },
-      ()=>{
-        loadBookings();
-        loadPublicSlots();
-        refreshStats();
-      }
-    )
-
-    .subscribe();
-
-
-  /* live slots */
-
-  db.channel('nabd-live-slots')
-
-    .on(
-      'postgres_changes',
-      {
-        event:'*',
-        schema:'public',
-        table:'slots',
-        filter:`clinic_id=eq.${CLINIC_ID}`
-      },
-      ()=>{
-        loadPublicSlots();
-        loadAllSlots();
-        refreshStats();
-      }
-    )
-
-    .subscribe();
-
 }
 
 
-/* =========================================================
-   SETTINGS
-========================================================= */
+/* =========================
+   DOCTOR CONTACT
+========================= */
+
+function callDoctor(){
+  const phone =
+    clinicSettings.phone ||
+    document.getElementById('setPhone')?.value ||
+    '';
+
+  if(!phone){
+    toast('رقم الدكتور غير مضاف بعد');
+    return;
+  }
+
+  /*
+    tel: يفتح تطبيق الهاتف والرقم جاهز
+    ولا يبدأ الاتصال تلقائياً.
+  */
+  window.location.href = 'tel:' + cleanPhone(phone);
+}
+
+function openWhatsApp(number){
+  const phone =
+    number ||
+    clinicSettings.whatsapp ||
+    document.getElementById('setWhatsApp')?.value ||
+    '';
+
+  if(!phone){
+    toast('رقم واتساب غير مضاف بعد');
+    return;
+  }
+
+  const url =
+    'https://wa.me/' +
+    whatsappNumber(phone);
+
+  window.open(url,'_blank');
+}
+
+
+/* =========================
+   PUBLIC SETTINGS
+========================= */
 
 async function loadSettings(){
 
-  if(!db) return;
+  const {data,error} = await db
+    .from('clinic_settings')
+    .select('*')
+    .eq('clinic_id',CLINIC_ID)
+    .maybeSingle();
 
-
-  const {
-    data,
-    error
-  } =
-    await db
-      .from('clinic_settings')
-      .select('*')
-      .eq('clinic_id',CLINIC_ID)
-      .maybeSingle();
-
-
-  if(error || !data)
+  if(error){
+    console.error(error);
     return;
+  }
 
+  if(!data) return;
 
-  settings = {
+  clinicSettings = data;
 
-    ...settings,
+  document.getElementById('doctorName').textContent =
+    data.doctor_name || 'دكتور العيادة';
 
-    ...data,
+  document.getElementById('doctorSpecialty').textContent =
+    data.specialty || 'الطبيب';
 
-    description:
-      data.biography ??
-      data.description ??
-      ''
+  document.getElementById('doctorAddress').textContent =
+    data.address || 'العنوان غير محدد';
 
-  };
+  document.getElementById('doctorHours').textContent =
+    data.working_hours || 'مواعيد العمل غير محددة';
 
-
-  renderSettings();
-
-}
-
-
-function renderSettings(){
-
-  $('doctorName').textContent =
-    settings.doctor_name ||
-    'بيانات الطبيب';
-
-
-  $('specialty').textContent =
-    settings.specialty ||
-    'التخصص الطبي';
-
-
-  $('wa').textContent =
-    settings.whatsapp ||
-    'لم تتم إضافة الرقم بعد';
-
-
-  $('doctorBio').textContent =
-    settings.description ||
+  const bio =
+    data.biography ??
+    data.description ??
     '';
 
+  const bioEl =
+    document.getElementById('bioLine');
 
-  $('bioLine')
-    .classList
-    .toggle(
-      'hidden',
-      !settings.description
-    );
-
-
-  $('address').textContent =
-    settings.address ||
-    'لم تتم إضافة العنوان بعد';
-
-
-  $('workingHours').textContent =
-    settings.working_hours ||
-    'لم تتم إضافة المواعيد بعد';
-
-
-  if(settings.doctor_image){
-
-    $('doctorImage').src =
-      settings.doctor_image;
-
+  if(String(bio).trim()){
+    bioEl.textContent = bio;
+    bioEl.style.display = 'block';
+  }else{
+    bioEl.textContent = '';
+    bioEl.style.display = 'none';
   }
 
+  if(data.doctor_image){
+    document.getElementById('doctorImage').src =
+      data.doctor_image;
 
-  $('sName').value =
-    settings.doctor_name || '';
+    document.getElementById('settingsImagePreview').src =
+      data.doctor_image;
+  }
 
-  $('sSpec').value =
-    settings.specialty || '';
+  fillSettings(data);
+}
 
-  $('sDesc').value =
-    settings.description || '';
+function fillSettings(data){
 
-  $('imagePreview').src =
-    settings.doctor_image ||
-    'logo.svg';
+  document.getElementById('setDoctorName').value =
+    data.doctor_name || '';
 
-  $('sWa').value =
-    settings.whatsapp || '';
+  document.getElementById('setSpecialty').value =
+    data.specialty || '';
 
-  $('sPhone').value =
-    settings.phone || '';
+  document.getElementById('setBiography').value =
+    data.biography ??
+    data.description ??
+    '';
 
-  $('sAddress').value =
-    settings.address || '';
+  document.getElementById('setPhone').value =
+    data.phone || '';
 
-  $('sHours').value =
-    settings.working_hours || '';
+  document.getElementById('setWhatsApp').value =
+    data.whatsapp || '';
 
+  document.getElementById('setAddress').value =
+    data.address || '';
+
+  document.getElementById('setHours').value =
+    data.working_hours || '';
+
+  if(data.doctor_image){
+    document.getElementById('settingsImagePreview').src =
+      data.doctor_image;
+  }
 }
 
 
-/* =========================================================
-   DOCTOR IMAGE
-========================================================= */
+/* =========================
+   PUBLIC SLOTS
+========================= */
 
-async function uploadDoctorImage(file){
+async function loadPublicSlots(){
 
-  if(!file)
-    return null;
+  const box =
+    document.getElementById('slots');
 
+  box.innerHTML =
+    '<div class="empty">جاري تحميل المواعيد...</div>';
 
-  if(!file.type.startsWith('image/')){
+  const {data,error} = await db
+    .from('slots')
+    .select('*')
+    .eq('clinic_id',CLINIC_ID)
+    .eq('status','available')
+    .order('date',{ascending:true})
+    .order('time',{ascending:true});
 
-    notice(
-      'settingsMsg',
-      'اختار ملف صورة فقط.',
-      'bad'
-    );
+  if(error){
+    console.error(error);
 
-    return null;
+    box.innerHTML =
+      '<div class="empty">تعذر تحميل المواعيد.</div>';
 
+    return;
   }
 
+  if(!data || !data.length){
 
-  if(file.size > 5*1024*1024){
+    box.innerHTML =
+      '<div class="empty">لا توجد مواعيد متاحة حالياً.</div>';
 
-    notice(
-      'settingsMsg',
-      'حجم الصورة يجب ألا يتجاوز 5 ميجابايت.',
-      'bad'
-    );
-
-    return null;
-
+    return;
   }
 
+  box.innerHTML =
+    data.map(slot => `
+      <div class="slot">
+
+        <div class="slotDate">
+          ${formatDate(slot.date)}
+        </div>
+
+        <div class="slotTime">
+          ${formatTime(slot.time)}
+        </div>
+
+        <button
+          class="btn btnPrimary"
+          style="width:100%"
+          onclick="openBooking('${slot.id}')">
+          حجز هذا الموعد
+        </button>
+
+      </div>
+    `).join('');
+}
+
+
+/* =========================
+   BOOKING
+========================= */
+
+async function sendBooking(){
+
+  const name =
+    document.getElementById('patientName').value.trim();
+
+  const phone =
+    document.getElementById('patientPhone').value.trim();
+
+  const reason =
+    document.getElementById('patientReason').value.trim();
+
+  const slotId =
+    document.getElementById('selectedSlotId').value;
+
+  if(!name){
+    toast('اكتب اسم المريض');
+    return;
+  }
+
+  if(!phone){
+    toast('اكتب رقم الهاتف');
+    return;
+  }
+
+  if(!slotId){
+    toast('اختر موعداً أولاً');
+    return;
+  }
+
+  const {data,error} = await db.rpc(
+    'create_booking',
+    {
+      p_clinic_id:CLINIC_ID,
+      p_slot_id:slotId,
+      p_patient_name:name,
+      p_patient_phone:phone,
+      p_reason:reason
+    }
+  );
+
+  if(error){
+
+    console.error(error);
+
+    toast(
+      'حدث خطأ أثناء الحجز: ' +
+      (error.message || '')
+    );
+
+    return;
+  }
+
+  const result =
+    Array.isArray(data) ? data[0] : data;
+
+  closeModal('bookingModal');
+
+  document.getElementById('patientName').value = '';
+  document.getElementById('patientPhone').value = '';
+  document.getElementById('patientReason').value = '';
+
+  let message =
+    'تم إرسال الحجز بنجاح.';
+
+  if(result?.daily_number != null){
+    message +=
+      ' رقم ترتيبك اليومي: ' +
+      result.daily_number;
+  }
+
+  if(result?.booking_code){
+    message +=
+      ' رقم الحجز: ' +
+      result.booking_code;
+  }
+
+  toast(message);
+
+  await loadPublicSlots();
+}
+
+
+/* =========================
+   TRACK BOOKING
+========================= */
+
+async function trackBooking(){
+
+  const code =
+    document.getElementById('trackCode')
+      .value.trim();
+
+  const resultBox =
+    document.getElementById('trackResult');
+
+  if(!code){
+    toast('اكتب رقم الحجز أو رقم الترتيب');
+    return;
+  }
+
+  resultBox.style.display = 'block';
+
+  resultBox.innerHTML =
+    'جاري البحث...';
+
+  const {data,error} = await db.rpc(
+    'track_booking',
+    {
+      p_clinic_id:CLINIC_ID,
+      p_booking_code:code
+    }
+  );
+
+  if(error){
+
+    console.error(error);
+
+    resultBox.innerHTML =
+      'تعذر العثور على الحجز. تأكد من الرقم.';
+
+    return;
+  }
+
+  const result =
+    Array.isArray(data) ? data[0] : data;
+
+  if(!result){
+
+    resultBox.innerHTML =
+      'لم يتم العثور على حجز بهذا الرقم.';
+
+    return;
+  }
+
+  let statusText =
+    result.status || 'غير معروف';
+
+  const statusMap = {
+    pending:'في انتظار تأكيد الدكتور',
+    approved:'تم تأكيد الحجز',
+    rejected:'تم رفض الحجز',
+    cancelled:'تم إلغاء الحجز'
+  };
+
+  statusText =
+    statusMap[statusText] ||
+    statusText;
+
+  resultBox.innerHTML = `
+    <strong>حالة الحجز:</strong>
+    ${statusText}
+    <br>
+    ${
+      result.daily_number != null
+      ? `<strong>رقم ترتيبك اليومي:</strong> ${result.daily_number}<br>`
+      : ''
+    }
+    ${
+      result.patient_name
+      ? `<strong>اسم المريض:</strong> ${result.patient_name}<br>`
+      : ''
+    }
+  `;
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+async function login(){
+
+  const email =
+    document.getElementById('loginEmail')
+      .value.trim();
+
+  const password =
+    document.getElementById('loginPassword')
+      .value;
+
+  if(!email || !password){
+    toast('اكتب البريد وكلمة المرور');
+    return;
+  }
+
+  const {data,error} =
+    await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if(error){
+
+    toast(
+      'بيانات الدخول غير صحيحة أو حدث خطأ.'
+    );
+
+    console.error(error);
+
+    return;
+  }
+
+  currentUser = data.user;
+
+  closeModal('loginModal');
+
+  await openDashboard();
+
+  toast('تم تسجيل الدخول بنجاح');
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+async function openDashboard(){
+
+  if(!currentUser){
+    openLogin();
+    return;
+  }
+
+  const {data,error} = await db
+    .from('clinic_settings')
+    .select('*')
+    .eq('clinic_id',CLINIC_ID)
+    .maybeSingle();
+
+  if(error){
+
+    console.error(error);
+
+    toast('تعذر تحميل بيانات العيادة');
+
+    return;
+  }
+
+  if(
+    data?.owner_id &&
+    data.owner_id !== currentUser.id
+  ){
+
+    toast('هذا الحساب غير مصرح له بلوحة الدكتور');
+
+    await db.auth.signOut();
+
+    return;
+  }
+
+  clinicSettings = data || {};
+
+  document.getElementById('publicPage')
+    .style.display = 'none';
+
+  document.getElementById('mainHeader')
+    .style.display = 'none';
+
+  document.getElementById('dashboard')
+    .classList.add('active');
+
+  await loadSettings();
+  await loadBookings();
+  await loadDashboardSlots();
+  await refreshStats();
+
+  document.getElementById('accountEmail').value =
+    currentUser.email || '';
+}
+
+function showPublic(){
+
+  document.getElementById('publicPage')
+    .style.display = 'block';
+
+  document.getElementById('mainHeader')
+    .style.display = 'block';
+
+  document.getElementById('dashboard')
+    .classList.remove('active');
+}
+
+async function logout(){
+
+  await db.auth.signOut();
+
+  currentUser = null;
+
+  showPublic();
+
+  toast('تم تسجيل الخروج');
+}
+
+function showDashPage(page,button){
+
+  document.querySelectorAll('.dashPage')
+    .forEach(el=>{
+      el.classList.remove('active');
+    });
+
+  document.getElementById('dash-'+page)
+    ?.classList.add('active');
+
+  document.querySelectorAll('.dashTab')
+    .forEach(el=>{
+      el.classList.remove('active');
+    });
+
+  if(button){
+    button.classList.add('active');
+  }
+
+  if(page === 'bookings'){
+    loadBookings();
+  }
+
+  if(page === 'approved'){
+    loadApproved();
+  }
+
+  if(page === 'slots'){
+    loadDashboardSlots();
+  }
+
+  if(page === 'overview'){
+    loadBookings();
+    refreshStats();
+  }
+}
+
+
+/* =========================
+   BOOKINGS
+========================= */
+
+function setBookingFilter(filter,button){
+
+  currentFilter = filter;
+
+  document.querySelectorAll('.filterBtn')
+    .forEach(el=>{
+      el.classList.remove('active');
+    });
+
+  if(button){
+    button.classList.add('active');
+  }
+
+  renderBookings();
+}
+
+async function loadBookings(){
+
+  const {data,error} = await db
+    .from('bookings')
+    .select(`
+      *,
+      slots (
+        date,
+        time
+      )
+    `)
+    .eq('clinic_id',CLINIC_ID)
+    .order('created_at',{ascending:false});
+
+  if(error){
+
+    console.error(error);
+
+    document.getElementById('bookingsList').innerHTML =
+      '<div class="empty">تعذر تحميل الحجوزات.</div>';
+
+    return;
+  }
+
+  allBookings = data || [];
+
+  renderBookings();
+  renderOverviewBookings();
+  renderApproved();
+}
+
+function bookingStatus(status){
+
+  const map = {
+    pending:['في الانتظار','statusPending'],
+    approved:['مؤكد','statusApproved'],
+    rejected:['مرفوض','statusRejected'],
+    cancelled:['ملغي','statusRejected']
+  };
+
+  const item =
+    map[status] ||
+    [status || 'غير معروف','statusPending'];
+
+  return `
+    <span class="status ${item[1]}">
+      ${item[0]}
+    </span>
+  `;
+}
+
+function renderBookings(){
+
+  const box =
+    document.getElementById('bookingsList');
+
+  if(!box) return;
+
+  let rows =
+    allBookings;
+
+  if(currentFilter !== 'all'){
+    rows =
+      rows.filter(
+        b => b.status === currentFilter
+      );
+  }
+
+  if(!rows.length){
+
+    box.innerHTML =
+      '<div class="empty">لا توجد حجوزات هنا.</div>';
+
+    return;
+  }
+
+  box.innerHTML =
+    rows.map(b => bookingCard(b)).join('');
+}
+
+function bookingCard(b){
+
+  const slot = b.slots || {};
+
+  const daily =
+    b.daily_number ??
+    b.patient_number ??
+    b.sequence_number ??
+    b.booking_number ??
+    '—';
+
+  const phone =
+    b.patient_phone || '';
+
+  const wa =
+    whatsappNumber(phone);
+
+  const date =
+    slot.date
+    ? formatDate(slot.date)
+    : '';
+
+  const time =
+    slot.time
+    ? formatTime(slot.time)
+    : '';
+
+  return `
+    <div class="bookingCard">
+
+      <div class="bookingTop">
+
+        <div style="display:flex;align-items:center;gap:10px">
+
+          <div class="patientNumber">
+            ${daily}
+          </div>
+
+          <div>
+            <strong>${escapeHtml(b.patient_name || 'بدون اسم')}</strong>
+            <div style="color:#6c8498;font-size:13px">
+              رقم ترتيب المريض اليومي
+            </div>
+          </div>
+
+        </div>
+
+        ${bookingStatus(b.status)}
+
+      </div>
+
+      <div style="margin-top:13px;line-height:1.9">
+
+        📅 ${date || 'موعد غير محدد'}
+        <br>
+
+        🕐 ${time || 'وقت غير محدد'}
+        <br>
+
+        ☎️ ${escapeHtml(phone || 'غير موجود')}
+
+        ${
+          b.reason
+          ? `<br>📝 ${escapeHtml(b.reason)}`
+          : ''
+        }
+
+      </div>
+
+      <div class="bookingActions">
+
+        ${
+          phone
+          ? `
+          <a
+            class="btn btnLight"
+            href="tel:${cleanPhone(phone)}">
+            ☎️ اتصال
+          </a>
+
+          <a
+            class="btn btnSuccess"
+            href="https://wa.me/${wa}"
+            target="_blank">
+            💬 واتساب
+          </a>
+          `
+          : ''
+        }
+
+        ${
+          b.status === 'pending'
+          ? `
+          <button
+            class="btn btnSuccess"
+            onclick="setBooking('${b.id}','approved')">
+            ✓ تأكيد الحجز
+          </button>
+
+          <button
+            class="btn btnDanger"
+            onclick="setBooking('${b.id}','rejected')">
+            رفض
+          </button>
+          `
+          : ''
+        }
+
+      </div>
+
+    </div>
+  `;
+}
+
+function renderOverviewBookings(){
+
+  const box =
+    document.getElementById('overviewBookings');
+
+  if(!box) return;
+
+  const rows =
+    allBookings.slice(0,5);
+
+  if(!rows.length){
+
+    box.innerHTML =
+      '<div class="empty">لا توجد حجوزات حتى الآن.</div>';
+
+    return;
+  }
+
+  box.innerHTML =
+    rows.map(b=>bookingCard(b)).join('');
+}
+
+function renderApproved(){
+
+  const box =
+    document.getElementById('approvedList');
+
+  if(!box) return;
+
+  const rows =
+    allBookings.filter(
+      b => b.status === 'approved'
+    );
+
+  if(!rows.length){
+
+    box.innerHTML =
+      '<div class="empty">لا توجد مواعيد مؤكدة.</div>';
+
+    return;
+  }
+
+  box.innerHTML =
+    rows.map(b=>bookingCard(b)).join('');
+}
+
+async function loadApproved(){
+
+  await loadBookings();
+}
+
+async function setBooking(id,status){
+
+  const {error} = await db
+    .from('bookings')
+    .update({
+      status,
+      updated_at:new Date().toISOString()
+    })
+    .eq('id',id);
+
+  if(error){
+
+    console.error(error);
+
+    toast('تعذر تحديث الحجز');
+
+    return;
+  }
+
+  toast(
+    status === 'approved'
+    ? 'تم تأكيد الحجز'
+    : 'تم رفض الحجز'
+  );
+
+  await loadBookings();
+  await loadDashboardSlots();
+  await loadPublicSlots();
+  await refreshStats();
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+async function refreshStats(){
+
+  const pending =
+    allBookings.filter(
+      b=>b.status === 'pending'
+    ).length;
+
+  const approved =
+    allBookings.filter(
+      b=>b.status === 'approved'
+    ).length;
+
+  const total =
+    allBookings.length;
+
+  const {count:available,error} =
+    await db
+      .from('slots')
+      .select('*',{count:'exact',head:true})
+      .eq('clinic_id',CLINIC_ID)
+      .eq('status','available');
+
+  if(error){
+    console.error(error);
+  }
+
+  document.getElementById('pendingCount')
+    .textContent = pending;
+
+  document.getElementById('approvedCount')
+    .textContent = approved;
+
+  document.getElementById('totalCount')
+    .textContent = total;
+
+  document.getElementById('availableCount')
+    .textContent = available || 0;
+}
+
+
+/* =========================
+   SLOTS DASHBOARD
+========================= */
+
+async function loadDashboardSlots(){
+
+  const box =
+    document.getElementById('dashboardSlots');
+
+  if(!box) return;
+
+  const {data,error} = await db
+    .from('slots')
+    .select('*')
+    .eq('clinic_id',CLINIC_ID)
+    .order('date',{ascending:true})
+    .order('time',{ascending:true});
+
+  if(error){
+
+    console.error(error);
+
+    box.innerHTML =
+      '<div class="empty">تعذر تحميل المواعيد.</div>';
+
+    return;
+  }
+
+  if(!data || !data.length){
+
+    box.innerHTML =
+      '<div class="empty">لا توجد مواعيد.</div>';
+
+    return;
+  }
+
+  box.innerHTML =
+    data.map(slot=>`
+
+      <div class="appointmentCard">
+
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+
+          <div>
+            <strong>
+              ${formatDate(slot.date)}
+            </strong>
+
+            <div style="color:#6c8498;margin-top:5px">
+              ${formatTime(slot.time)}
+            </div>
+
+            <div style="margin-top:7px">
+              ${slot.status === 'available'
+                ? bookingStatus('approved').replace('مؤكد','متاح')
+                : `<span class="status statusPending">${escapeHtml(slot.status || 'غير معروف')}</span>`
+              }
+            </div>
+          </div>
+
+          <button
+            class="btn btnDanger"
+            onclick="deleteSlot('${slot.id}')">
+            🗑 حذف
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join('');
+}
+
+async function addSlot(){
+
+  const date =
+    document.getElementById('slotDate').value;
+
+  const time =
+    document.getElementById('slotTime').value;
+
+  if(!date || !time){
+
+    toast('اختر التاريخ والوقت');
+
+    return;
+  }
+
+  const {error} = await db
+    .from('slots')
+    .insert({
+      clinic_id:CLINIC_ID,
+      date,
+      time,
+      status:'available'
+    });
+
+  if(error){
+
+    console.error(error);
+
+    toast('تعذر إضافة الموعد');
+
+    return;
+  }
+
+  document.getElementById('slotDate').value = '';
+  document.getElementById('slotTime').value = '';
+
+  toast('تمت إضافة الموعد');
+
+  await loadDashboardSlots();
+  await loadPublicSlots();
+  await refreshStats();
+}
+
+async function deleteSlot(id){
+
+  if(!confirm('هل تريد حذف هذا الموعد؟')){
+    return;
+  }
+
+  const {error} = await db
+    .from('slots')
+    .delete()
+    .eq('id',id);
+
+  if(error){
+
+    console.error(error);
+
+    toast(
+      'تعذر حذف الموعد. قد يكون مرتبطاً بحجز.'
+    );
+
+    return;
+  }
+
+  toast('تم حذف الموعد');
+
+  await loadDashboardSlots();
+  await loadPublicSlots();
+  await refreshStats();
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+async function saveSettings(){
+
+  if(!currentUser){
+    toast('يجب تسجيل الدخول أولاً');
+    return;
+  }
+
+  const payload = {
+
+    doctor_name:
+      document.getElementById('setDoctorName').value.trim(),
+
+    specialty:
+      document.getElementById('setSpecialty').value.trim(),
+
+    biography:
+      document.getElementById('setBiography').value.trim(),
+
+    description:
+      document.getElementById('setBiography').value.trim(),
+
+    phone:
+      document.getElementById('setPhone').value.trim(),
+
+    whatsapp:
+      document.getElementById('setWhatsApp').value.trim(),
+
+    address:
+      document.getElementById('setAddress').value.trim(),
+
+    working_hours:
+      document.getElementById('setHours').value.trim(),
+
+    updated_at:
+      new Date().toISOString()
+  };
+
+  const {error} = await db
+    .from('clinic_settings')
+    .update(payload)
+    .eq('clinic_id',CLINIC_ID);
+
+  if(error){
+
+    console.error(error);
+
+    toast(
+      'تعذر حفظ البيانات: ' +
+      error.message
+    );
+
+    return;
+  }
+
+  await loadSettings();
+
+  toast('تم حفظ بيانات العيادة بنجاح');
+}
+
+
+/* =========================
+   IMAGE UPLOAD
+========================= */
+
+async function uploadDoctorImage(){
+
+  const file =
+    document.getElementById('doctorImageFile')
+      .files[0];
+
+  if(!file){
+
+    toast('اختر صورة أولاً');
+
+    return;
+  }
 
   if(!currentUser){
 
-    notice(
-      'settingsMsg',
-      'سجّل الدخول أولًا.',
-      'bad'
-    );
+    toast('يجب تسجيل الدخول');
 
-    return null;
-
+    return;
   }
 
-
-  $('imageMsg').textContent =
-    'جاري رفع الصورة...';
-
-
-  const ext =
-    (
-      file.name
-        .split('.')
-        .pop() ||
-      'jpg'
-    )
-    .toLowerCase()
-    .replace(
-      /[^a-z0-9]/g,
-      ''
-    ) ||
-    'jpg';
-
+  const extension =
+    file.name.split('.').pop();
 
   const path =
-    `${CLINIC_ID}/${currentUser.id}-${Date.now()}.${ext}`;
+    CLINIC_ID +
+    '/' +
+    Date.now() +
+    '.' +
+    extension;
 
-
-  const {
-    error
-  } =
-    await db
-      .storage
+  const {error:uploadError} =
+    await db.storage
       .from('doctor-images')
       .upload(
         path,
         file,
         {
           upsert:true,
-          contentType:file.type,
-          cacheControl:'3600'
+          contentType:file.type
         }
       );
 
+  if(uploadError){
 
-  if(error){
+    console.error(uploadError);
 
-    $('imageMsg').textContent =
-      'فشل رفع الصورة';
-
-    notice(
-      'settingsMsg',
-      error.message,
-      'bad'
+    toast(
+      'تعذر رفع الصورة. تأكد من وجود bucket باسم doctor-images.'
     );
 
-    return null;
-
+    return;
   }
 
-
-  const {
-    data
-  } =
-    db
-      .storage
+  const {data} =
+    db.storage
       .from('doctor-images')
       .getPublicUrl(path);
 
-
-  settings.doctor_image =
+  const imageUrl =
     data.publicUrl;
 
-
-  $('imagePreview').src =
-    data.publicUrl;
-
-
-  $('imageMsg').textContent =
-    'تم رفع الصورة بنجاح';
-
-
-  return data.publicUrl;
-
-}
-
-
-function previewDoctorImage(e){
-
-  const file =
-    e.target.files?.[0];
-
-  if(!file)
-    return;
-
-
-  if(file.size > 5*1024*1024){
-
-    notice(
-      'settingsMsg',
-      'حجم الصورة يجب ألا يتجاوز 5 ميجابايت.',
-      'bad'
-    );
-
-    e.target.value='';
-
-    return;
-
-  }
-
-
-  const url =
-    URL.createObjectURL(file);
-
-  $('imagePreview').src =
-    url;
-
-}
-
-
-/* =========================================================
-   SAVE SETTINGS
-========================================================= */
-
-async function saveSettings(){
-
-  const file =
-    $('sImageFile')
-      .files?.[0];
-
-
-  if(file){
-
-    const url =
-      await uploadDoctorImage(file);
-
-    if(!url)
-      return;
-
-  }
-
-
-  const payload = {
-
-    doctor_name:
-      $('sName').value.trim(),
-
-    specialty:
-      $('sSpec').value.trim(),
-
-    description:
-      $('sDesc').value.trim(),
-
-    biography:
-      $('sDesc').value.trim(),
-
-    doctor_image:
-      settings.doctor_image || '',
-
-    whatsapp:
-      $('sWa').value.trim(),
-
-    phone:
-      $('sPhone').value.trim(),
-
-    address:
-      $('sAddress').value.trim(),
-
-    working_hours:
-      $('sHours').value.trim(),
-
-    updated_at:
-      new Date().toISOString()
-
-  };
-
-
-  const {
-    error
-  } =
+  const {error} =
     await db
       .from('clinic_settings')
-      .update(payload)
-      .eq('clinic_id',CLINIC_ID);
-
-
-  if(error){
-
-    notice(
-      'settingsMsg',
-      error.message,
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  await loadSettings();
-
-  $('sImageFile').value='';
-
-
-  notice(
-    'settingsMsg',
-    'تم حفظ كل بيانات العيادة بنجاح.',
-    'ok'
-  );
-
-}
-
-
-/* =========================================================
-   PUBLIC SLOTS
-========================================================= */
-
-async function loadPublicSlots(){
-
-  if(!db)
-    return;
-
-
-  const {
-    data,
-    error
-  } =
-    await db
-      .from('slots')
-      .select(
-        'id,slot_date,slot_time,status'
-      )
-      .eq('clinic_id',CLINIC_ID)
-      .order('slot_date')
-      .order('slot_time');
-
-
-  if(error)
-    return;
-
-
-  const available =
-    data?.filter(
-      x => x.status === 'available'
-    ) || [];
-
-
-  if(!available.length){
-
-    $('slots').innerHTML =
-      `<div class="empty">
-        لا توجد مواعيد متاحة حاليًا.<br>
-        تابع الصفحة لاحقًا.
-      </div>`;
-
-    return;
-
-  }
-
-
-  $('slots').innerHTML =
-
-    available
-      .map(
-        x => `
-
-        <button
-          class="slot"
-          onclick="chooseSlot(
-            '${x.id}',
-            '${x.slot_date}',
-            '${x.slot_time}'
-          )">
-
-          ${formatDate(x.slot_date)}
-
-          <br>
-
-          ${String(x.slot_time).slice(0,5)}
-
-          <br>
-
-          <small>
-            متاح للحجز
-          </small>
-
-        </button>
-
-      `
-      )
-      .join('');
-
-}
-
-
-/* =========================================================
-   CHOOSE SLOT
-========================================================= */
-
-function chooseSlot(id,date,time){
-
-  selectedSlot = {
-    id,
-    date,
-    time
-  };
-
-
-  $('chosen').innerHTML =
-    `
-    الموعد المختار:
-    <b>
-      ${formatDateTime(date,time)}
-    </b>
-    `;
-
-
-  openModal('bookModal');
-
-}
-
-
-/* =========================================================
-   CREATE BOOKING
-========================================================= */
-
-async function sendBooking(){
-
-  if(!selectedSlot)
-    return;
-
-
-  const name =
-    $('pName')
-      .value
-      .trim();
-
-
-  const phone =
-    $('pPhone')
-      .value
-      .trim();
-
-
-  const reason =
-    $('pReason')
-      .value
-      .trim();
-
-
-  if(
-    name.length < 2 ||
-    phone.length < 7
-  ){
-
-    notice(
-      'bookMsg',
-      'اكتب الاسم ورقم الهاتف بشكل صحيح.',
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  const {
-    data,
-    error
-  } =
-    await db.rpc(
-      'create_booking',
-      {
-        p_clinic_id:
-          CLINIC_ID,
-
-        p_slot_id:
-          selectedSlot.id,
-
-        p_patient_name:
-          name,
-
-        p_patient_phone:
-          phone,
-
-        p_reason:
-          reason
-      }
-    );
-
-
-  if(error){
-
-    notice(
-      'bookMsg',
-      error.message,
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  const result =
-    data?.[0];
-
-
-  const code =
-    result?.booking_code;
-
-
-  const dailyNumber =
-    result?.daily_number ??
-    code;
-
-
-  if(!dailyNumber){
-
-    notice(
-      'bookMsg',
-      'تعذر إنشاء رقم العميل.',
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  notice(
-    'bookMsg',
-
-    `
-    تم إرسال طلب الحجز بنجاح.
-
-    <br><br>
-
-    <b style="font-size:20px">
-      رقم العميل: ${esc(dailyNumber)}
-    </b>
-
-    <br>
-
-    ده ترتيبك في يوم الموعد،
-    واحتفظ بالرقم لمتابعة حالة الحجز.
-    `,
-
-    'ok'
-  );
-
-
-  $('trackCode').value =
-    dailyNumber;
-
-
-  $('pName').value='';
-  $('pPhone').value='';
-  $('pReason').value='';
-
-
-  await loadPublicSlots();
-
-}
-
-
-/* =========================================================
-   TRACK BOOKING
-========================================================= */
-
-async function trackBooking(){
-
-  const code =
-    $('trackCode')
-      .value
-      .trim();
-
-
-  if(!code){
-
-    notice(
-      'trackResult',
-      'اكتب رقم العميل أولًا.',
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  const {
-    data,
-    error
-  } =
-    await db.rpc(
-      'track_booking',
-      {
-        p_clinic_id:
-          CLINIC_ID,
-
-        p_booking_code:
-          code
-      }
-    );
-
-
-  if(
-    error ||
-    !data?.length
-  ){
-
-    notice(
-      'trackResult',
-      'لم يتم العثور على حجز بهذا الرقم.',
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  const x =
-    data[0];
-
-
-  const c =
-    x.status === 'approved'
-      ? 'ok'
-      : x.status === 'rejected'
-        ? 'bad'
-        : 'status';
-
-
-  notice(
-    'trackResult',
-
-    `
-    <b>
-      عميل رقم ${esc(
-        x.daily_number || code
-      )}
-    </b>
-
-    <br>
-
-    ${statusText(x.status)}
-
-    <br>
-
-    الموعد:
-    ${formatDateTime(
-      x.slot_date,
-      x.slot_time
-    )}
-    `,
-
-    c
-  );
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-async function login(){
-
-  const email =
-    $('loginEmail')
-      .value
-      .trim();
-
-
-  const password =
-    $('loginPassword')
-      .value;
-
-
-  if(!email || !password){
-
-    notice(
-      'loginMsg',
-      'اكتب البريد وكلمة المرور.',
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  const {
-    data,
-    error
-  } =
-    await db.auth.signInWithPassword({
-      email,
-      password
-    });
-
-
-  if(error){
-
-    notice(
-      'loginMsg',
-      'بيانات الدخول غير صحيحة أو الحساب غير مفعّل.',
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  currentUser =
-    data.user;
-
-
-  closeModal('loginModal');
-
-  await openDashboard();
-
-}
-
-
-/* =========================================================
-   OPEN DASHBOARD
-========================================================= */
-
-async function openDashboard(){
-
-  if(!currentUser)
-    return;
-
-
-  const {
-    data,
-    error
-  } =
-    await db
-      .from('clinic_settings')
-      .select('owner_id')
-      .eq('clinic_id',CLINIC_ID)
-      .maybeSingle();
-
-
-  if(
-    error ||
-    !data ||
-    data.owner_id !== currentUser.id
-  ){
-
-    await db.auth.signOut();
-
-    notice(
-      'loginMsg',
-      'هذا الحساب غير مرتبط بهذه النسخة من نبض.',
-      'bad'
-    );
-
-    openModal('loginModal');
-
-    return;
-
-  }
-
-
-  $('publicView')
-    .style
-    .display='none';
-
-
-  $('dashboard')
-    .classList
-    .add('on');
-
-
-  $('accountEmail').value =
-    currentUser.email || '';
-
-
-  await loadSettings();
-
-  await loadBookings();
-
-  await loadAllSlots();
-
-  await refreshStats();
-
-  showTab('overview');
-
-}
-
-
-/* =========================================================
-   PUBLIC
-========================================================= */
-
-function showPublic(){
-
-  $('dashboard')
-    .classList
-    .remove('on');
-
-
-  $('publicView')
-    .style
-    .display='block';
-
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-async function logout(){
-
-  await db.auth.signOut();
-
-  currentUser=null;
-
-  $('loginEmail').value='';
-  $('loginPassword').value='';
-
-  showPublic();
-
-}
-
-
-/* =========================================================
-   BOOKING FILTER
-========================================================= */
-
-function setBookingFilter(filter){
-
-  bookingFilter =
-    filter;
-
-  loadBookings();
-
-}
-
-
-/* =========================================================
-   LOAD BOOKINGS
-========================================================= */
-
-async function loadBookings(){
-
-  if(!currentUser)
-    return;
-
-
-  const {
-    data,
-    error
-  } =
-    await db
-      .from('bookings')
-      .select(
-        `
-        id,
-        booking_code,
-        daily_number,
-        patient_name,
-        patient_phone,
-        reason,
-        status,
-        created_at,
-        slot_id,
-        slots(
-          slot_date,
-          slot_time
-        )
-        `
-      )
-      .eq(
-        'clinic_id',
-        CLINIC_ID
-      )
-      .order(
-        'created_at',
-        {ascending:false}
-      );
-
-
-  if(error){
-
-    $('bookingsList').innerHTML =
-      `<div class="empty">
-        تعذر تحميل الحجوزات.
-      </div>`;
-
-    return;
-
-  }
-
-
-  let rows =
-    data || [];
-
-
-  if(
-    bookingFilter !== 'all'
-  ){
-
-    rows =
-      rows.filter(
-        b =>
-          b.status === bookingFilter
-      );
-
-  }
-
-
-  if(!rows.length){
-
-    $('bookingsList').innerHTML =
-      `<div class="empty">
-        لا توجد حجوزات في هذا القسم.
-      </div>`;
-
-    return;
-
-  }
-
-
-  $('bookingsList').innerHTML =
-
-    rows
-      .map(
-        b => {
-
-          const num =
-            b.daily_number ??
-            b.booking_code ??
-            '—';
-
-
-          const slot =
-            b.slots || {};
-
-
-          const phone =
-            String(
-              b.patient_phone || ''
-            );
-
-
-          const wa =
-            normalizePhone(phone);
-
-
-          return `
-
-          <div class="booking">
-
-            <div class="bookingTop">
-
-              <div
-                style="
-                  display:flex;
-                  align-items:center;
-                  gap:10px
-                ">
-
-                <div class="bookingNumber">
-                  ${esc(num)}
-                </div>
-
-                <div>
-
-                  <b>
-                    عميل رقم ${esc(num)}
-                  </b>
-
-                  <br>
-
-                  ${esc(
-                    b.patient_name
-                  )}
-
-                </div>
-
-              </div>
-
-
-              <div class="muted">
-
-                ${
-                  slot.slot_date
-                    ? formatDate(
-                        slot.slot_date
-                      )
-                    : ''
-                }
-
-                ${
-                  slot.slot_time
-                    ? ' — ' +
-                      String(
-                        slot.slot_time
-                      ).slice(0,5)
-                    : ''
-                }
-
-              </div>
-
-            </div>
-
-
-            <div
-              style="margin-top:12px">
-
-              📱
-              ${esc(phone)}
-
-            </div>
-
-
-            <div
-              class="muted"
-              style="margin-top:6px">
-
-              ${
-                esc(
-                  b.reason ||
-                  'بدون سبب مكتوب'
-                )
-              }
-
-            </div>
-
-
-            <div
-              style="
-                margin-top:10px;
-                display:flex;
-                gap:8px;
-                align-items:center;
-                flex-wrap:wrap
-              ">
-
-              <b>
-                الحالة:
-              </b>
-
-              ${statusBadge(b.status)}
-
-            </div>
-
-
-            <!-- CONTACT PATIENT -->
-
-            <div class="actions">
-
-              <a
-                class="btn small soft"
-                href="tel:${esc(phone)}">
-
-                📞 اتصال بالمريض
-
-              </a>
-
-
-              ${
-                wa
-                  ? `
-                    <a
-                      class="btn small"
-                      style="
-                        background:#eaf9f1;
-                        color:#087b48
-                      "
-                      href="https://wa.me/${wa}"
-                      target="_blank"
-                      rel="noopener">
-
-                      💬 واتساب المريض
-
-                    </a>
-                    `
-                  : ''
-              }
-
-            </div>
-
-
-            <!-- PENDING ACTIONS -->
-
-            ${
-              b.status === 'pending'
-
-              ?
-
-              `
-
-              <div class="actions">
-
-                <button
-                  class="btn small success"
-                  onclick="
-                    setBooking(
-                      '${b.id}',
-                      'approved'
-                    )
-                  ">
-
-                  ✓ تأكيد الحجز
-
-                </button>
-
-
-                <button
-                  class="btn small danger"
-                  onclick="
-                    setBooking(
-                      '${b.id}',
-                      'rejected'
-                    )
-                  ">
-
-                  ✕ رفض الحجز
-
-                </button>
-
-              </div>
-
-              `
-
-              : ''
-
-            }
-
-          </div>
-
-          `;
-
-        }
-      )
-      .join('');
-
-}
-
-
-/* =========================================================
-   UPDATE BOOKING
-========================================================= */
-
-async function setBooking(
-  id,
-  status
-){
-
-  const {
-    error
-  } =
-    await db
-      .from('bookings')
       .update({
-        status,
-        updated_at:
-          new Date().toISOString()
+        doctor_image:imageUrl,
+        updated_at:new Date().toISOString()
       })
-      .eq('id',id)
       .eq('clinic_id',CLINIC_ID);
 
-
   if(error){
 
-    alert(error.message);
+    console.error(error);
+
+    toast('تم رفع الصورة لكن تعذر حفظها');
 
     return;
-
   }
 
+  document.getElementById('doctorImage').src =
+    imageUrl;
 
-  await loadBookings();
+  document.getElementById('settingsImagePreview').src =
+    imageUrl;
 
-  await loadPublicSlots();
+  clinicSettings.doctor_image =
+    imageUrl;
 
-  await loadAllSlots();
-
-  await refreshStats();
-
+  toast('تم رفع الصورة بنجاح');
 }
 
 
-/* =========================================================
-   ADD SLOT
-========================================================= */
-
-async function addSlot(){
-
-  const date =
-    $('newDate').value;
-
-  const time =
-    $('newTime').value;
-
-
-  if(!date || !time){
-
-    notice(
-      'slotMsg',
-      'اختار التاريخ والوقت.',
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  const {
-    error
-  } =
-    await db
-      .from('slots')
-      .insert({
-        clinic_id:CLINIC_ID,
-        slot_date:date,
-        slot_time:time,
-        status:'available'
-      });
-
-
-  if(error){
-
-    notice(
-      'slotMsg',
-      error.message.includes('duplicate')
-        ? 'هذا الموعد موجود بالفعل.'
-        : error.message,
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  $('newDate').value='';
-  $('newTime').value='';
-
-
-  notice(
-    'slotMsg',
-    'تمت إضافة الموعد بنجاح.',
-    'ok'
-  );
-
-
-  await loadAllSlots();
-
-  await loadPublicSlots();
-
-  await refreshStats();
-
-}
-
-
-/* =========================================================
-   LOAD ALL SLOTS
-========================================================= */
-
-async function loadAllSlots(){
-
-  if(!currentUser)
-    return;
-
-
-  const {
-    data,
-    error
-  } =
-    await db
-      .from('slots')
-      .select('*')
-      .eq('clinic_id',CLINIC_ID)
-      .order('slot_date')
-      .order('slot_time');
-
-
-  if(error)
-    return;
-
-
-  if(!data?.length){
-
-    $('doctorSlots').innerHTML =
-      `<div class="empty">
-        لا توجد مواعيد.
-      </div>`;
-
-    return;
-
-  }
-
-
-  $('doctorSlots').innerHTML =
-
-    data
-      .map(
-        x => `
-
-        <div class="booking">
-
-          <div>
-
-            <b>
-              ${formatDate(x.slot_date)}
-            </b>
-
-            <br>
-
-            <b>
-              ${String(
-                x.slot_time
-              ).slice(0,5)}
-            </b>
-
-          </div>
-
-
-          <div
-            class="muted"
-            style="margin-top:7px">
-
-            ${
-              x.status === 'available'
-                ? 'متاح'
-                : x.status === 'pending'
-                  ? 'في انتظار موافقة الحجز'
-                  : 'محجوز ومؤكد'
-            }
-
-          </div>
-
-
-          <div class="actions">
-
-            <button
-              class="btn small danger"
-              onclick="
-                deleteSlot('${x.id}')
-              ">
-
-              🗑️ حذف الموعد
-
-            </button>
-
-          </div>
-
-        </div>
-
-        `
-      )
-      .join('');
-
-}
-
-
-/* =========================================================
-   DELETE SLOT
-========================================================= */
-
-async function deleteSlot(id){
-
-  const ok =
-    confirm(
-      'هل تريد حذف هذا الموعد؟'
-    );
-
-
-  if(!ok)
-    return;
-
-
-  const {
-    error
-  } =
-    await db
-      .from('slots')
-      .delete()
-      .eq('id',id)
-      .eq('clinic_id',CLINIC_ID);
-
-
-  if(error){
-
-    alert(error.message);
-
-    return;
-
-  }
-
-
-  await loadAllSlots();
-
-  await loadPublicSlots();
-
-  await refreshStats();
-
-}
-
-
-/* =========================================================
-   DASHBOARD STATS
-========================================================= */
-
-async function refreshStats(){
-
-  if(!currentUser)
-    return;
-
-
-  const {
-    data
-  } =
-    await db
-      .from('bookings')
-      .select('status')
-      .eq(
-        'clinic_id',
-        CLINIC_ID
-      );
-
-
-  $('statPending').textContent =
-    data?.filter(
-      x => x.status === 'pending'
-    ).length || 0;
-
-
-  $('statApproved').textContent =
-    data?.filter(
-      x => x.status === 'approved'
-    ).length || 0;
-
-
-  const {
-    data:s
-  } =
-    await db
-      .from('slots')
-      .select('status')
-      .eq(
-        'clinic_id',
-        CLINIC_ID
-      );
-
-
-  $('statAvailable').textContent =
-    s?.filter(
-      x => x.status === 'available'
-    ).length || 0;
-
-}
-
-
-/* =========================================================
-   PASSWORD
-========================================================= */
-
-async function changePassword(){
-
-  const p =
-    $('newPassword').value;
-
-  const p2 =
-    $('newPassword2').value;
-
-
-  if(p.length < 8){
-
-    notice(
-      'accountMsg',
-      'كلمة المرور يجب أن تكون 8 أحرف على الأقل.',
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  if(p !== p2){
-
-    notice(
-      'accountMsg',
-      'تأكيد كلمة المرور غير مطابق.',
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  const {
-    error
-  } =
-    await db.auth.updateUser({
-      password:p
-    });
-
-
-  if(error){
-
-    notice(
-      'accountMsg',
-      error.message,
-      'bad'
-    );
-
-    return;
-
-  }
-
-
-  $('newPassword').value='';
-  $('newPassword2').value='';
-
-
-  notice(
-    'accountMsg',
-    'تم تغيير كلمة المرور بنجاح.',
-    'ok'
-  );
-
-}
-
-
-/* =========================================================
-   EMAIL
-========================================================= */
+/* =========================
+   ACCOUNT
+========================= */
 
 async function changeEmail(){
 
   const email =
-    $('newEmail')
-      .value
-      .trim();
-
+    document.getElementById('accountEmail')
+      .value.trim();
 
   if(!email){
 
-    notice(
-      'accountMsg',
-      'اكتب البريد الجديد.',
-      'bad'
-    );
+    toast('اكتب البريد الجديد');
 
     return;
-
   }
 
-
-  const {
-    error
-  } =
+  const {error} =
     await db.auth.updateUser({
       email
     });
 
-
   if(error){
 
-    notice(
-      'accountMsg',
-      error.message,
-      'bad'
+    toast(
+      'تعذر تغيير البريد: ' +
+      error.message
     );
 
     return;
-
   }
 
-
-  $('newEmail').value='';
-
-
-  notice(
-    'accountMsg',
-    'تم طلب تغيير البريد الإلكتروني. قد يطلب Supabase تأكيد البريد الجديد.',
-    'ok'
+  toast(
+    'تم طلب تغيير البريد. قد يصلك رابط تأكيد.'
   );
+}
 
+async function changePassword(){
+
+  const password =
+    document.getElementById('newPassword')
+      .value;
+
+  if(!password || password.length < 6){
+
+    toast(
+      'كلمة المرور يجب أن تكون 6 أحرف على الأقل'
+    );
+
+    return;
+  }
+
+  const {error} =
+    await db.auth.updateUser({
+      password
+    });
+
+  if(error){
+
+    toast(
+      'تعذر تغيير كلمة المرور: ' +
+      error.message
+    );
+
+    return;
+  }
+
+  document.getElementById('newPassword')
+    .value = '';
+
+  toast('تم تغيير كلمة المرور');
 }
 
 
-/* =========================================================
+/* =========================
+   SECURITY / HTML
+========================= */
+
+function escapeHtml(value){
+
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+}
+
+
+/* =========================
+   AUTH STATE
+========================= */
+
+async function init(){
+
+  await loadSettings();
+  await loadPublicSlots();
+
+  const {
+    data:{
+      session
+    }
+  } = await db.auth.getSession();
+
+  if(session){
+
+    currentUser =
+      session.user;
+
+  }
+
+  db.auth.onAuthStateChange(
+    async (_event,session)=>{
+      currentUser =
+        session?.user || null;
+    }
+  );
+
+  /*
+    تحديث تلقائي للمواعيد والحجوزات
+  */
+  try{
+
+    db.channel('nabd-live-bookings')
+      .on(
+        'postgres_changes',
+        {
+          event:'*',
+          schema:'public',
+          table:'bookings',
+          filter:`clinic_id=eq.${CLINIC_ID}`
+        },
+        async ()=>{
+          await loadBookings();
+
+          if(currentUser){
+            await refreshStats();
+          }
+
+          await loadPublicSlots();
+        }
+      )
+      .subscribe();
+
+    db.channel('nabd-live-slots')
+      .on(
+        'postgres_changes',
+        {
+          event:'*',
+          schema:'public',
+          table:'slots',
+          filter:`clinic_id=eq.${CLINIC_ID}`
+        },
+        async ()=>{
+          await loadPublicSlots();
+
+          if(currentUser){
+            await loadDashboardSlots();
+            await refreshStats();
+          }
+        }
+      )
+      .subscribe();
+
+  }catch(e){
+    console.error(e);
+  }
+}
+
+
+/* =========================
+   CLOSE MODAL ON OUTSIDE CLICK
+========================= */
+
+document.querySelectorAll('.modal')
+  .forEach(modal=>{
+
+    modal.addEventListener(
+      'click',
+      e=>{
+
+        if(e.target === modal){
+          modal.classList.remove('active');
+        }
+
+      }
+    );
+
+  });
+
+
+/* =========================
    START
-========================================================= */
+========================= */
 
 init();
 
 </script>
 
 </body>
-          </html>
+        </html>
